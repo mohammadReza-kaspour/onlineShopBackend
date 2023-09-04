@@ -27,8 +27,25 @@ class Application {
         this.#app.use(this.#express.json());
         this.#app.use(this.#express.urlencoded({extended:true}));
         this.#app.use(this.#express.static("./public"));
-        this.#app.use("/api-doc" , swaggerUI.serve , swaggerUI.setup(swaggerJSDoc({
-            
+        this.#app.use("/api-docs" , swaggerUI.serve , swaggerUI.setup(swaggerJSDoc({
+            swaggerDefinition : {
+                info : {
+                    title : "Online Shop",
+                    version : "1.0.0",
+                    description : "بک اند فروشگاه آنلاین ",
+                    contact : {
+                        name : "mohammad reza kaspour",
+                        url : "https://github.com/mohammadReza-kaspour",
+                        email : "kaspourmohammad@gmail.com"
+                    }
+                },
+                servers : [
+                    {
+                        url : `http://localhost:${this.#PORT}`
+                    }
+                ]
+            },
+            apis : ["./app/routers/*/*.js"]
         })))
     }
     createServer = (port) => {
