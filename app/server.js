@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const createError = require("http-errors");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
+const cors = require("cors");
 
 class Application {
     #express = require("express");
@@ -23,6 +24,7 @@ class Application {
         this.errorHandling();
     }
     configApplication = () => {
+        this.#app.use(cors());
         this.#app.use(morgan("dev"));
         this.#app.use(this.#express.json());
         this.#app.use(this.#express.urlencoded({extended:true}));

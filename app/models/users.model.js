@@ -8,9 +8,9 @@ const OTPSchema = new Schema({
 const userSchema = new Schema({
     firstName : {type : String},
     lastName : {type : String},
-    username : {type : String , lowercase : true},
+    username : {type : String , lowercase : true , unique:true},
     email : {type : String , lowercase : true},
-    phone : {type : String , required : true},
+    mobile : {type : String , required : true , unique:true},
     password : {type : String},
     OTP : {type : OTPSchema},
     bills : {type : []},
