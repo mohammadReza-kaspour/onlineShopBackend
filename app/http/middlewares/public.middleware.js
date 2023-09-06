@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const { createError } = require("../../utils/functions.utils");
-const { verifyAccessToken } = require("../../utils/token.utils");
+const { verifyAccessToken, verifyRefreshToken, signAccessToken } = require("../../utils/token.utils");
 const { userModel } = require("../../models/users.model");
 
 const expressValidatorMapper = (req , res , next) => {
@@ -43,7 +43,33 @@ const checkAccessTokenToLoggin = async (req , res , next) => {
     }
 }
 
+const checkRefreshTokenToLogin = async (req , res , next) => {
+    try {
+        const refreshTokenFromBody = req.body.token;
+        if(!refreshTokenFromBody) throw createError(401 , "مجددا وارد حساب کاربری خود شوید");
+
+        const verifyResult = verifyRefreshToken(refreshTokenFromBody);
+        if(!verifyResult) throw createError(401 , "توکن شما معتبر نمیباشد");
+
+        const user = await userModel.findOne({mobile : verifyResult.mobile});
+        if(!user) throw createError(401 , "کاربری با این مشخصات یافت نشد توکن نامعتبر می باشد");
+
+        const accessToken = signAccessToken({mobile : user.mobile});
+        const refreshToken = signAccessToken({mobile : user.mobile});
+
+        req.token = {
+            accessToken,
+            refreshToken,
+        }
+
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     expressValidatorMapper,
     checkAccessTokenToLoggin,
+    checkRefreshTokenToLogin,
 }

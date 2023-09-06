@@ -1,7 +1,7 @@
 const { userModel } = require("../../../models/users.model");
 const { OTP_EXPIRE } = require("../../../utils/constants.utils");
 const { badFieldsOrBadValuesFilter, randomNumberGenerator, createError } = require("../../../utils/functions.utils");
-const { signAccessToken } = require("../../../utils/token.utils");
+const { signAccessToken, signRefreshToken } = require("../../../utils/token.utils");
 
 class UserAuthController {
     register = async (req , res , next) => {
@@ -19,6 +19,25 @@ class UserAuthController {
             next(error)
         }
     }
+    refreshToken = async (req , res , next) => {
+        try {
+            const {accessToken , refreshToken} = req.token;
+
+            res.status(201).json({
+                statusCode : res.statusCode,
+                success : true,
+                data : {
+                    message : "hi",
+                    data : {
+                        accessToken,
+                        refreshToken
+                    }
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     checkOTP = async (req , res , next) => {
         try {
             const {mobile , code} = req.body;
@@ -27,6 +46,7 @@ class UserAuthController {
             if(+user.OTP.expire <= Date.now()) throw createError(400 , "کد شما منقضی شده است");
 
             const accessToken = signAccessToken({mobile : user.mobile});
+            const refreshToken = signRefreshToken({mobile : user.mobile});
 
             res.status(201).json({
                 statusCode : res.statusCode,
@@ -34,7 +54,8 @@ class UserAuthController {
                 data : {
                     message : "با موفقیت وارد شدید",
                     data : {
-                        accessToken
+                        accessToken,
+                        refreshToken
                     }
                 }
             })
