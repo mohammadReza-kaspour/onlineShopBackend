@@ -19,6 +19,7 @@ class Application {
 
         this.configApplication();
         this.connectToMongoDB(DB_URI);
+        this.configRedis();
         this.createServer(PORT);
         this.createRoutes();
         this.errorHandling();
@@ -49,6 +50,10 @@ class Application {
             },
             apis : ["./app/routers/*/*.js"]
         })))
+    }
+    configRedis = async () => {
+        const {redisClient} = require("./utils/initRedis.utils");
+        await redisClient.connect();
     }
     createServer = (port) => {
         const http = require("http");
