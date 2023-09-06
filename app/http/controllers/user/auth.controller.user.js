@@ -45,8 +45,8 @@ class UserAuthController {
             if(!user) throw createError(400 , "اطلاعات وارد شده نادرست می باشد");
             if(+user.OTP.expire <= Date.now()) throw createError(400 , "کد شما منقضی شده است");
 
-            const accessToken = signAccessToken({mobile : user.mobile});
-            const refreshToken = signRefreshToken({mobile : user.mobile});
+            const accessToken = signAccessToken({mobile : user.mobile}) || createError(401 , "خطا در ایجاد توکن");
+            const refreshToken = await signRefreshToken({mobile : user.mobile}) || createError(401 , "خطا در ایجاد توکن");
 
             res.status(201).json({
                 statusCode : res.statusCode,
@@ -88,7 +88,7 @@ class UserAuthController {
     handleLoginRequest = async (mobile , code) => {
         const otp = {
             code,
-            expire : OTP_EXPIRE  //2min
+            expire : OTP_EXPIRE()  //2min
         }
         
         const result = await this.checkExistUser(mobile);

@@ -1,7 +1,8 @@
 const { validationResult } = require("express-validator");
 const { createError } = require("../../utils/functions.utils");
-const { verifyAccessToken, verifyRefreshToken, signAccessToken } = require("../../utils/token.utils");
+const { verifyAccessToken, verifyRefreshToken, signAccessToken ,signRefreshToken} = require("../../utils/token.utils");
 const { userModel } = require("../../models/users.model");
+const { redisClient } = require("../../utils/initRedis.utils");
 
 const expressValidatorMapper = (req , res , next) => {
     try {
@@ -54,8 +55,11 @@ const checkRefreshTokenToLogin = async (req , res , next) => {
         const user = await userModel.findOne({mobile : verifyResult.mobile});
         if(!user) throw createError(401 , "کاربری با این مشخصات یافت نشد توکن نامعتبر می باشد");
 
-        const accessToken = signAccessToken({mobile : user.mobile});
-        const refreshToken = signAccessToken({mobile : user.mobile});
+        const tokenOnRedis = await redisClient.get(verifyResult.mobile);
+        if(tokenOnRedis !== refreshTokenFromBody) throw createError(401 , "توکن صحیح نمیباشد")
+
+        const accessToken = signAccessToken({mobile : user.mobile}) || createError(401 , "خطا در ایجاد توکن");
+        const refreshToken = await signRefreshToken({mobile : user.mobile}) || createError(401 , "خطا در ایجاد توکن");
 
         req.token = {
             accessToken,
