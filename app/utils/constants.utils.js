@@ -6,4 +6,12 @@ module.exports = {
     ACCESS_TOKEN_EXPIRE : 60*2,
     REFRESH_TOKEN_SECRET : md5("mohammad2"),
     REFRESH_TOKEN_EXPIRE : "1y",
+    ROLES : {
+        USER : "USER",
+        ADMIN : "USER",
+        WRITER : "USER",
+        TEACHER : "USER",
+        SUPPLIER : "USER",
+    },
+    
 }
