@@ -1,7 +1,7 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const { default: mongoose } = require("mongoose");
 
-addCategoryValidation = () => [
+const addCategoryValidation = () => [
     body("title").isLength({min:2}).withMessage("عنوان دسته بندی نمیتواند خالی باشد"),
     body("parent").custom((value , {req}) => {
         if(value && value?.length > 0){
@@ -12,6 +12,17 @@ addCategoryValidation = () => [
     })
 ]
 
+const getCategoryByIdValidation = () => [
+    param("id").isMongoId().withMessage("شناسه ی وارد شده معتبر نمیباشد"),
+]
+
+const updateCategoryValidation = () => [
+    body("title").notEmpty().withMessage("عنوان دسته بندی نمیتواند خالی باشد"),
+    param("id").isMongoId().withMessage("شناسه دسته بندی وارد شده صحیح نمیباشد")
+]
+
 module.exports = {
     addCategoryValidation,
+    getCategoryByIdValidation,
+    updateCategoryValidation,
 }

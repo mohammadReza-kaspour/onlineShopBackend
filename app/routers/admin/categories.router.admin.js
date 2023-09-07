@@ -1,6 +1,6 @@
 const { AdminCategoryController } = require("../../http/controllers/admin/category.controller.admin");
 const { expressValidatorMapper } = require("../../http/middlewares/public.middleware");
-const { addCategoryValidation } = require("../../http/validations/admin/category.validation.admin");
+const { addCategoryValidation, getCategoryByIdValidation, updateCategoryValidation } = require("../../http/validations/admin/category.validation.admin");
 
 const router = require("express").Router();
 
@@ -135,6 +135,68 @@ router.get("/all" ,
  */
 router.delete("/remove/:id" ,
             AdminCategoryController.removeCategory
+);
+
+/**
+ * @swagger
+ *  /admin/category/get-by-id/{id}:
+ *      get:
+ *          summary: get category by id
+ *          description: get category by id
+ *          tags: [Admin-Category]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *              201:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              401:
+ *                  description: Unauthorized
+ *              500:
+ *                  description: Internal Server Error
+ */
+router.get("/get-by-id/:id" ,
+            getCategoryByIdValidation(),
+            expressValidatorMapper,
+            AdminCategoryController.getCategoryByID
+);
+
+/**
+ * @swagger
+ *  /admin/category/update/{id}:
+ *      put:
+ *          summary: update category
+ *          description: update category
+ *          tags: [Admin-Category]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  description: id of category
+ *                  required: true
+ *                  type: string
+ *              -   in: formData
+ *                  name: title
+ *                  description: title of category
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *              201:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              401:
+ *                  description: Unauthorized
+ *              500:
+ *                  description: Internal Server Error
+ */
+router.put("/update/:id" ,
+            updateCategoryValidation(),
+            expressValidatorMapper,
+            AdminCategoryController.editCategory
 );
 
 module.exports = {

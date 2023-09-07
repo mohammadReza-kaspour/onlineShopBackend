@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { categoryModel } = require("../../../models/categories.model");
 const { createError } = require("../../../utils/functions.utils");
 
@@ -42,13 +43,19 @@ class AdminCategoryController {
     }
     editCategory = async (req , res , next) => {
         try {
+            const {id} = req.params;
+            const {title} = req.body;
+            const result = await categoryModel.findOneAndUpdate({_id:id} , {$set : {title}});
+            if(!result) throw createError(400 , "دسته بندی مورد نظر یافت نشد");
             
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
-                    data : {}
+                    message : "دسته بندی با موفقیت به روز رسانی شد",
+                    data : {
+                        result,
+                    }
                 }
             })
         } catch (error) {
@@ -59,12 +66,24 @@ class AdminCategoryController {
         try {
             const result = await categoryModel.aggregate([
                 {
-                    $lookup : {
+                    $graphLookup : {
                         from : "categories",
-                        localField : "_id",
-                        foreignField : "parent",
-                        as : "children"
+                        startWith : "$_id",
+                        connectFromField : "_id",
+                        connectToField : "parent",
+                        depthField : "depth",
+                        as : "childs"
                     }
+                },
+                {
+                    $project : {
+                        createdAt : 0,
+                        updatedAt : 0,
+                        __v : 0
+                    }
+                },
+                {
+                    $match : {parent : undefined},
                 }
             ])
 
@@ -82,13 +101,39 @@ class AdminCategoryController {
     }
     getCategoryByID = async (req , res , next) => {
         try {
-            
+            const id = new mongoose.Types.ObjectId(req.params.id);
+            const result = await categoryModel.aggregate([
+                {
+                    $graphLookup : {
+                        from : "categories",
+                        startWith : "$_id",
+                        connectFromField : "_id",
+                        connectToField : "parent",
+                        depthField : "depth",
+                        as : "childs"
+                    }
+                },
+                {
+                    $project : {
+                        createdAt : 0,
+                        updatedAt : 0,
+                        __v : 0
+                    }
+                },
+                {
+                    $match : {_id : id},
+                },
+            ])
+            if(result.length <= 0) throw createError(400 , "دسته بندی ای یافت نشد") 
+
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
                     message : "hi",
-                    data : {}
+                    data : {
+                        result,
+                    }
                 }
             })
         } catch (error) {
