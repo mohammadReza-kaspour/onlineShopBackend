@@ -1,18 +1,26 @@
 const { Schema, Types, model } = require("mongoose");
 
+const commentSchema = new Schema({
+    user : {type : Types.ObjectId , ref : "users" , required : "true"},
+    comment : {type : String , default : ""},
+    createdAt : {type : Date , dafault : Date.now()},
+    parent : {type : Types.ObjectId},
+})
+
 const blogSchema = new Schema({
     author : {type : Types.ObjectId , required : true},
     title : {type : String , required : true},
     text : {type : String , required : true},
     image : {type : String , required : true},
     tags : {type : [String] , default : []},
-    categoty : {type : Types.ObjectId , required : true},
-    comments : {type : [] , default : []},
-    likes : {type : [Types.ObjectId] , default : []},
-    dislikes : {type : [Types.ObjectId] , default : []},
-    bookmarks : {type : [Types.ObjectId] , default : []},
+    categoty : {type : [Types.ObjectId] , required : true , default : []},
+    comments : {type : [commentSchema] , default : []},
+    likes : {type : [Types.ObjectId] , ref:"users" , default : []},
+    dislikes : {type : [Types.ObjectId] , ref:"users" , default : []},
+    bookmarks : {type : [Types.ObjectId] , ref:"users" , default : []},
 },{
-    timestamps : true
+    timestamps : true,
+    versionKey : false,
 })
 
 const blogModel = model("blog" , blogSchema);
