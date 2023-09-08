@@ -13,5 +13,7 @@ module.exports = {
         TEACHER : "USER",
         SUPPLIER : "USER",
     },
+    VALID_IMAGE_UPLOAD_FORMATS : [".jpg" , ".jpeg" , ".webp" , ".png"],
+    MAX_IMAGE_UPLOAD_SIZE : 2*1000*100, //byte
     
 }
