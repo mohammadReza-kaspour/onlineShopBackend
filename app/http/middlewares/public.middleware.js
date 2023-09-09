@@ -25,6 +25,7 @@ const expressValidatorMapper = (req , res , next) => {
 const checkAccessTokenToLoggin = async (req , res , next) => {
     try {
         const authField = req?.headers?.authorization;
+        
         if(!authField) throw createError(401 , "لطفا وارد حساب کاربری خود شوید");
 
         const [bearer , token] = authField?.split(" ");

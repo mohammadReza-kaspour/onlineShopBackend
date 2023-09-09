@@ -2,7 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { createError } = require("./functions.utils");
-const { VALID_IMAGE_UPLOAD_FORMATS } = require("./constants.utils");
+const { VALID_IMAGE_UPLOAD_FORMATS, MAX_IMAGE_UPLOAD_SIZE } = require("./constants.utils");
 
 const createUploadPathForMulter = () => {
     const date = new Date();
@@ -35,7 +35,7 @@ const storage = multer.diskStorage({
     },
 })
 
-const uploadFile = multer({storage , fileFilter});
+const uploadFile = multer({storage, fileFilter , limits : {fileSize:MAX_IMAGE_UPLOAD_SIZE}});
 
 module.exports = {
     uploadFile,

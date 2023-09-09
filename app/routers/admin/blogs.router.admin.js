@@ -1,6 +1,6 @@
 const { BlogController } = require("../../http/controllers/admin/blogs.controller.admin");
 const { parserMiddlewareByCustomField } = require("../../http/middlewares/admin/blogs.middleware.admin");
-const { expressValidatorMapper } = require("../../http/middlewares/public.middleware");
+const { expressValidatorMapper, checkAccessTokenToLoggin } = require("../../http/middlewares/public.middleware");
 const { createBlogValidation } = require("../../http/validations/admin/blogs.validation.admin");
 const { uploadFile } = require("../../utils/multer.utils");
 
@@ -18,13 +18,21 @@ const router = require("express").Router();
  *      summary: get all blogs
  *      description: get all blogs
  *      tags: [Admin-Blog]
+ *      parameters:
+ *          -   in: header
+ *              name: authorization
+ *              description: put access token to login
+ *              value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
+ *              required: true
+ *              type: string
+ *              example: Bearer token.....
  *      responses:
  *          200:
  *              name: Success
  *          400:
  *              name: Bad request
  */
-router.get("/get-all-blogs" , BlogController.getAllBlogs);
+router.get("/get-all-blogs" , checkAccessTokenToLoggin , BlogController.getAllBlogs);
 
 /**
  * @swagger
@@ -36,6 +44,13 @@ router.get("/get-all-blogs" , BlogController.getAllBlogs);
  *      consumes: 
  *          -   multipart/form-data
  *      parameters:
+ *          -   in: header
+ *              name: authorization
+ *              description: put access token to login
+ *              value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
+ *              required: true
+ *              type: string
+ *              example: Bearer token.....
  *          -   in: formData
  *              name: title
  *              required: true
@@ -67,6 +82,7 @@ router.get("/get-all-blogs" , BlogController.getAllBlogs);
  *              description: Internal Server Error
  */
 router.post("/create" ,
+            checkAccessTokenToLoggin,
             uploadFile.single("image"),
             parserMiddlewareByCustomField("categories" , ","),
             parserMiddlewareByCustomField("tags" , ","),

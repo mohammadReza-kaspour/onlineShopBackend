@@ -13,7 +13,7 @@ const blogSchema = new Schema({
     text : {type : String , required : true},
     image : {type : String , required : true},
     tags : {type : [String] , default : []},
-    categoty : {type : [Types.ObjectId] , required : true , default : []},
+    category : {type : [Types.ObjectId] , required : true , default : []},
     comments : {type : [commentSchema] , default : []},
     likes : {type : [Types.ObjectId] , ref:"users" , default : []},
     dislikes : {type : [Types.ObjectId] , ref:"users" , default : []},

@@ -5,6 +5,7 @@ const createError = require("http-errors");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const cors = require("cors");
+const { deleteJunkFilesAfterBreakUploading } = require("./utils/multer.utils");
 
 class Application {
     #express = require("express");
@@ -87,6 +88,8 @@ class Application {
         this.#app.use((error , req , res , next) => {
             const statusCode = error?.status ?? error?.statusCode ?? 500;
             const message = error?.msg ?? error?.message ?? "Internal Server Error"
+            if(!!req.file) deleteJunkFilesAfterBreakUploading(req.file.path);
+
             res.status(statusCode).json({
                 statusCode : statusCode,
                 success : false,

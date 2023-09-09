@@ -6,10 +6,10 @@ class BlogController {
     createBlog = async (req , res , next) => {
         try {
             const {title , text , categories , tags} = req.body;
-            const body = req.body;
             const file = req.file;
+            const author = req.user._id;
 
-            const result = await blogModel.create({title,text,tags,categoty:categories,image:file.path});
+            const result = await blogModel.create({author,title,text,tags,category:categories,image:file.path});
             if(!result) throw createError(500 , "بلاگ ایجاد نشد")
             
             res.status(200).json({
@@ -23,7 +23,6 @@ class BlogController {
                 }
             })
         } catch (error) {
-            deleteJunkFilesAfterBreakUploading(req.file.path);
             next(error)
         }
     }
@@ -44,7 +43,30 @@ class BlogController {
     }
     getAllBlogs = async (req , res , next) => {
         try {
-            const blogs = await blogModel.find({});
+            const blogs = await blogModel.aggregate([
+                {
+                    $match : {},
+                },
+                {
+                    $lookup : {
+                        from : "users",
+                        localField : "author",
+                        foreignField : "_id",
+                        as : "author"
+                    }
+                },
+                {
+                    $unwind : "$author",
+                },
+                {
+                    $lookup : {
+                        from : "categories",
+                        localField : "category",
+                        foreignField : "_id",
+                        as : "category"
+                    }
+                },
+            ]);
             
             res.status(200).json({
                 statusCode : res.statusCode,

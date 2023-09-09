@@ -13,7 +13,7 @@ const parserMiddlewareByCustomField = (field , seperator) => {
                     .map(item => item.trim());
                 }
                 else if(typeof inputField === "string"){
-                    if(!inputField.match(/^[a-z0-9\,]*$/gmi)){
+                    if(!inputField.match(/^[a-z0-9\, ]*$/gmi)){
                         throw createError(400 , "عبارت وارد شده نمیتواند دارای علائم غیر حروف و عدد باشد");
                     }
                     req.body[field] = inputField.split(seperator).filter(item => {if(!!item.trim()) return item})
