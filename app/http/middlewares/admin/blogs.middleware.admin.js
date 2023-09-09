@@ -21,7 +21,6 @@ const parserMiddlewareByCustomField = (field , seperator) => {
                 }
 
             }else req.body[field] = [];
-            console.log(req.body[field]);
             
             next()
         } catch (error) {

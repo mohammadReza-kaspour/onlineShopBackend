@@ -1,11 +1,16 @@
 const { blogModel } = require("../../../models/blogs.model");
+const { createError } = require("../../../utils/functions.utils");
+const { deleteJunkFilesAfterBreakUploading } = require("../../../utils/multer.utils");
 
 class BlogController {
     createBlog = async (req , res , next) => {
         try {
             const {title , text , categories , tags} = req.body;
             const body = req.body;
-            const img = req.file;
+            const file = req.file;
+
+            const result = await blogModel.create({title,text,tags,categoty:categories,image:file.path});
+            if(!result) throw createError(500 , "بلاگ ایجاد نشد")
             
             res.status(200).json({
                 statusCode : res.statusCode,
@@ -13,12 +18,12 @@ class BlogController {
                 data : {
                     message : "بلاگ شما با موفقیت ایجاد شد",
                     data : {
-                        body,
-                        img
+                        result,
                     }
                 }
             })
         } catch (error) {
+            deleteJunkFilesAfterBreakUploading(req.file.path);
             next(error)
         }
     }
