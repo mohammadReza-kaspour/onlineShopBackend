@@ -8,12 +8,12 @@ module.exports = {
     REFRESH_TOKEN_EXPIRE : "1y",
     ROLES : {
         USER : "USER",
-        ADMIN : "USER",
-        WRITER : "USER",
-        TEACHER : "USER",
-        SUPPLIER : "USER",
+        ADMIN : "ADMIN",
+        WRITER : "WRITER",
+        TEACHER : "TEACHER",
+        SUPPLIER : "SUPPLIER",
     },
     VALID_IMAGE_UPLOAD_FORMATS : [".jpg" , ".jpeg" , ".webp" , ".png"],
-    MAX_IMAGE_UPLOAD_SIZE : 2*1000*100, //byte
+    MAX_IMAGE_UPLOAD_SIZE : 2*1000*1000, //byte
     
 }

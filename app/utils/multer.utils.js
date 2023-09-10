@@ -17,6 +17,7 @@ const deleteJunkFilesAfterBreakUploading = (path) => {
 }
 
 const fileFilter = (req,file,cb) => {
+    if(!file?.originalname) return cb(null , null);
     const ext = path.extname(file.originalname);
     if(!VALID_IMAGE_UPLOAD_FORMATS.includes(ext)){
         return cb(createError(400 , "فرمت فایل ارسال شده صحیح نمیباشد"));
@@ -26,9 +27,11 @@ const fileFilter = (req,file,cb) => {
 
 const storage = multer.diskStorage({
     destination: (req , file , cb) => {
+        if(!file?.originalname) return cb(null , null);
         cb(null , createUploadPathForMulter());
     },
     filename: (req , file , cb) => {
+        if(!file?.originalname) return cb(null , null);
         const ext = path.extname(file.originalname);
         const fileName = `${Date.now()}${ext}`;
         cb(null , fileName);

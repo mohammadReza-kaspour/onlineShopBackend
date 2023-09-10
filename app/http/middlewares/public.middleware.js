@@ -73,8 +73,22 @@ const checkRefreshTokenToLogin = async (req , res , next) => {
     }
 }
 
+const swaggerFreeObjectFixer = (req , res , next) => {
+    try {
+        const keys = Object.keys(req.headers);
+        const key = keys.findIndex(item => item.toLowerCase() === "content-length");
+        const value = req.headers[keys[key]];
+        if(+value === 0) delete req.headers[keys[key]];
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     expressValidatorMapper,
     checkAccessTokenToLoggin,
     checkRefreshTokenToLogin,
+    swaggerFreeObjectFixer,
 }

@@ -20,6 +20,10 @@ const badFieldsOrBadValuesFilter = (data , acceptedFilds = []) => {
     const badValues = [" " , "" , undefined , null , 0 , -1 , NaN];
 
     Object.entries(data).forEach(([key , value]) => {
+        if(typeof value === "string"){
+            data[key] = value.trim();
+            value = value.trim();
+        }
         if(!validFilds.includes(key)) delete data[key];
         if(badValues.includes(value)) delete data[key];
         if(Array.isArray(data[key])){
