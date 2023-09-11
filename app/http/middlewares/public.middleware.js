@@ -86,9 +86,21 @@ const swaggerFreeObjectFixer = (req , res , next) => {
     }
 }
 
+const checkRole = (role) => {
+    return (req , res , next) => {
+        try {
+            if(!req.user.roles.includes(role)) throw createError(403 , "دسترسی به این قسمت برای شما مجاز نمیباشد");
+            next()
+        } catch (error) {
+            next(error)
+        }
+    }
+}
+
 module.exports = {
     expressValidatorMapper,
     checkAccessTokenToLoggin,
     checkRefreshTokenToLogin,
     swaggerFreeObjectFixer,
+    checkRole,
 }

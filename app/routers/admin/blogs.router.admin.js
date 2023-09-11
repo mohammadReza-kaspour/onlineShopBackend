@@ -32,7 +32,7 @@ const router = require("express").Router();
  *          400:
  *              name: Bad request
  */
-router.get("/get-all-blogs" , checkAccessTokenToLoggin , BlogController.getAllBlogs);
+router.get("/get-all-blogs" , BlogController.getAllBlogs);
 
 /**
  * @swagger
@@ -82,7 +82,6 @@ router.get("/get-all-blogs" , checkAccessTokenToLoggin , BlogController.getAllBl
  *              description: Internal Server Error
  */
 router.post("/create" ,
-            checkAccessTokenToLoggin,
             uploadFile.single("image"),
             parserMiddlewareByCustomField("categories" , ","),
             parserMiddlewareByCustomField("tags" , ","),
@@ -120,7 +119,6 @@ router.post("/create" ,
  *              name: Internal Server Error
  */
 router.get("/get-by-id/:id" ,
-            checkAccessTokenToLoggin,
             getBlogByIDValidation(),
             expressValidatorMapper,
             BlogController.getBlogByID
@@ -155,7 +153,6 @@ router.get("/get-by-id/:id" ,
  *              name: Internal Server Error
  */
 router.delete("/remove/:id" ,
-            checkAccessTokenToLoggin,
             getBlogByIDValidation(),
             expressValidatorMapper,
             BlogController.deleteBlogByID
@@ -208,7 +205,6 @@ router.delete("/remove/:id" ,
  *              description: Internal Server Error
  */
 router.put("/update/:id" ,
-            checkAccessTokenToLoggin,
             swaggerFreeObjectFixer,
             uploadFile.single("image"),
             parserMiddlewareByCustomField("categories" , ","),
