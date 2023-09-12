@@ -13,11 +13,17 @@ const createUploadPathForMulter = () => {
 }
 
 const deleteJunkFilesAfterBreakUploading = (files) => {
+    console.log(files);
     if(Array.isArray(files) && files.length > 0){
-        console.log(files);
-        files.forEach(item => fs.unlinkSync(item.path))
+        files.forEach(item => {
+            if(fs.existsSync(item.path)){
+                fs.unlinkSync(item.path)
+            }
+        })
     }else{
-        fs.unlinkSync(files.path)
+        if(fs.existsSync(files.path)){
+            fs.unlinkSync(files.path)
+        }
     }
 }
 
