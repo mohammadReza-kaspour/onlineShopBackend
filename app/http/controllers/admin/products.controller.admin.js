@@ -1,14 +1,54 @@
+const { productModel } = require("../../../models/products.model");
+const { badFieldsOrBadValuesFilter, createError } = require("../../../utils/functions.utils");
+
 class AdminProductController {
     addProduct = async (req , res , next) => {
         try {
-            console.log(req.body);
+            const validFields = [
+                "title", 
+                "short_desc", 
+                "total_desc",
+                "tags",
+                "category",
+                "count",
+                "discount",
+                "price",
+                "weight",
+                "width",
+                "height",
+                "length",
+            ];
+
+            let data = badFieldsOrBadValuesFilter(req.body , validFields);
+
+            if(req.files.length > 0) data.images = req.files.map(item => item.path);
+            data.supplier = req.user._id;
+            
+            ((featureFields) => {
+                let featureValue = [];
+                let feature = {};
+                let type = "virtual";
+                featureFields.forEach(item => featureValue.push(!!data[item]?data[item]:""));
+                
+                for(let i=0; i< featureFields.length; i++) feature[featureFields[i]] = featureValue[i];
+                data.feature = badFieldsOrBadValuesFilter(feature , featureFields);
+                
+                if(Object.keys(data.feature).length > 0) type = "physical"
+                data.type = type
+                
+            })(["weight","width","height","length"])
+            
+            const result = await productModel.create({...data});
+            if(!result) throw createError(500 , "محصول مورد اضافه نشد خطا در سیستم");
             
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
                     message : "محصول شما با موفقیت اضافه شده",
-                    data : {}
+                    data : {
+                        result
+                    }
                 }
             })
         } catch (error) {

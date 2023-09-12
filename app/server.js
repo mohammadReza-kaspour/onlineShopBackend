@@ -102,7 +102,8 @@ class Application {
         this.#app.use((error , req , res , next) => {
             const statusCode = error?.status ?? error?.statusCode ?? 500;
             const message = error?.msg ?? error?.message ?? "Internal Server Error"
-            if(!!req.file) deleteJunkFilesAfterBreakUploading(req.file.path);
+            if(!!req.file) deleteJunkFilesAfterBreakUploading(req.file);
+            if(!!req.files) deleteJunkFilesAfterBreakUploading(req.files);
 
             res.status(statusCode).json({
                 statusCode : statusCode,

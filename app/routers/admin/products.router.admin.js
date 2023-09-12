@@ -1,5 +1,6 @@
 const { AdminProductController } = require("../../http/controllers/admin/products.controller.admin");
-const { parserMiddlewareByCustomField } = require("../../http/middlewares/public.middleware");
+const { parserMiddlewareByCustomField, expressValidatorMapper } = require("../../http/middlewares/public.middleware");
+const { addProductValidation } = require("../../http/validations/admin/products.validation.admin");
 const { uploadFile } = require("../../utils/multer.utils");
 
 const router = require("express").Router();
@@ -43,9 +44,23 @@ const router = require("express").Router();
  *                  count:
  *                      type: string
  *                      description: count of product
- *                  image:
- *                      type: file
- *                      description: image of product
+ *                  images:
+ *                      type: array
+ *                      items:
+ *                          type: string
+ *                          format: binary
+ *                  width:
+ *                      type: string
+ *                      description: width of product
+ *                  height:
+ *                      type: string
+ *                      description: height of product
+ *                  length:
+ *                      type: string
+ *                      description: length of product
+ *                  weight:
+ *                      type: string
+ *                      description: weight of product
  */
 
 /**
@@ -77,9 +92,11 @@ const router = require("express").Router();
  *          
  */
 router.post("/add",
-            uploadFile.single("image"),
+            uploadFile.array("images" , 10),
             parserMiddlewareByCustomField("tags",","),
             parserMiddlewareByCustomField("category",","),
+            addProductValidation(),
+            expressValidatorMapper,
             AdminProductController.addProduct
 );
 
