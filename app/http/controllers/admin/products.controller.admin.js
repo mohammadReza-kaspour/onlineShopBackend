@@ -1,12 +1,13 @@
-class ProductController {
+class AdminProductController {
     addProduct = async (req , res , next) => {
         try {
+            console.log(req.body);
             
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
+                    message : "محصول شما با موفقیت اضافه شده",
                     data : {}
                 }
             })
@@ -77,5 +78,5 @@ class ProductController {
 }
 
 module.exports = {
-    ProductController : new ProductController()
+    AdminProductController : new AdminProductController()
 }

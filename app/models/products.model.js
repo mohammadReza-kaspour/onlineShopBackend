@@ -18,7 +18,7 @@ const productSchema = new Schema({
     total_desc : {type : String , required : true},
     images : {type : [String] , required : true},
     tags : {type : [String] , default : []},
-    category : {type : Types.ObjectId , required : true},
+    category : {type : [Types.ObjectId] , default: []},
     comments : {type : [commentSchema] , default : []},
     likes : {type : [Types.ObjectId] , default : []},
     dislikes : {type : [Types.ObjectId] , default : []},

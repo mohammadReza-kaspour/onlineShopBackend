@@ -1,6 +1,5 @@
 const { BlogController } = require("../../http/controllers/admin/blogs.controller.admin");
-const { parserMiddlewareByCustomField } = require("../../http/middlewares/admin/blogs.middleware.admin");
-const { expressValidatorMapper, checkAccessTokenToLoggin, swaggerFreeObjectFixer } = require("../../http/middlewares/public.middleware");
+const { expressValidatorMapper, swaggerFreeObjectFixer , parserMiddlewareByCustomField } = require("../../http/middlewares/public.middleware");
 const { createBlogValidation, getBlogByIDValidation, updateBlogValidation } = require("../../http/validations/admin/blogs.validation.admin");
 const { uploadFile } = require("../../utils/multer.utils");
 
