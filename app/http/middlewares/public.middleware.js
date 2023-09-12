@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator");
+const { validationResult, header } = require("express-validator");
 const { createError } = require("../../utils/functions.utils");
 const { verifyAccessToken, verifyRefreshToken, signAccessToken ,signRefreshToken} = require("../../utils/token.utils");
 const { userModel } = require("../../models/users.model");

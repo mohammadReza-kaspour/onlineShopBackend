@@ -1,11 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
-
-const commentSchema = new Schema({
-    user : {type : Types.ObjectId , ref : "users" , required : "true"},
-    comment : {type : String , default : ""},
-    createdAt : {type : Date , dafault : Date.now()},
-    parent : {type : Types.ObjectId},
-})
+const { commentSchema } = require("./publicSchema.model");
 
 const blogSchema = new Schema({
     author : {type : Types.ObjectId , required : true},

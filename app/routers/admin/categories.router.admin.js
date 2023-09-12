@@ -3,6 +3,30 @@ const { expressValidatorMapper } = require("../../http/middlewares/public.middle
 const { addCategoryValidation, getCategoryByIdValidation, updateCategoryValidation } = require("../../http/validations/admin/category.validation.admin");
 
 const router = require("express").Router();
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *          Add:
+ *              type: object
+ *              required:
+ *                  - title
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: title of category
+ *                  parent:
+ *                      type: string
+ *                      description: parent of category
+ *          Update:
+ *              type: object
+ *              required:
+ *                  - title
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: title of category
+ */
 
 /**
  * tags:
@@ -16,24 +40,15 @@ const router = require("express").Router();
  *          summary: add category
  *          description: add category with its parent to database
  *          tags: [Admin-Category]
- *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
- *              -   in: formData
- *                  name: title
- *                  description: title of category
- *                  required: true
- *                  type: string
- *              -   in: formData
- *                  name: parent
- *                  description: parent of category
- *                  required: false
- *                  type: string
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: "#/components/schemas/Add"
+ *                  application/json:
+ *                      schema:
+ *                          $ref: "#/components/schemas/Add"
  *          responses:
  *              201:
  *                  description: Success
@@ -57,14 +72,6 @@ router.post("/add" ,
  *          summary: getparents
  *          description: get category parents
  *          tags: [Admin-Category]
- *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
  *          responses:
  *              201:
  *                  description: Success
@@ -87,13 +94,6 @@ router.get("/parents" ,
  *          description: get category parents
  *          tags: [Admin-Category]
  *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
  *              -   in: path
  *                  name: parent
  *                  required: true
@@ -119,14 +119,6 @@ router.get("/children/:parent" ,
  *          summary: get allcategories
  *          description: et allcategories
  *          tags: [Admin-Category]
- *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
  *          responses:
  *              201:
  *                  description: Success
@@ -149,13 +141,6 @@ router.get("/all" ,
  *          description: remove category
  *          tags: [Admin-Category]
  *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
  *              -   in: path
  *                  name: id
  *                  required: true
@@ -182,13 +167,6 @@ router.delete("/remove/:id" ,
  *          description: get category by id
  *          tags: [Admin-Category]
  *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
  *              -   in: path
  *                  name: id
  *                  required: true
@@ -217,23 +195,20 @@ router.get("/get-by-id/:id" ,
  *          description: update category
  *          tags: [Admin-Category]
  *          parameters:
- *              -   in: header
- *                  name: authorization
- *                  description: put access token to login
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDI5MDYxNiwiZXhwIjoxNjk0ODk1NDE2fQ.kR0BZZKw1O98eg8ACHhS6OEmerS8o5yTw-w25apzN6o
- *                  required: true
- *                  type: string
- *                  example: Bearer token.....
  *              -   in: path
  *                  name: id
  *                  description: id of category
  *                  required: true
  *                  type: string
- *              -   in: formData
- *                  name: title
- *                  description: title of category
- *                  required: true
- *                  type: string
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: "#/components/schemas/Update"
+ *                  application/json:
+ *                      schema:
+ *                          $ref: "#/components/schemas/Update"
  *          responses:
  *              201:
  *                  description: Success

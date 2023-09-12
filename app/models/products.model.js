@@ -1,4 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
+const { commentSchema } = require("./publicSchema.model");
 
 const featureSchema = new Schema({
     length : {type : String , default : ""},
@@ -18,7 +19,7 @@ const productSchema = new Schema({
     images : {type : [String] , required : true},
     tags : {type : [String] , default : []},
     category : {type : Types.ObjectId , required : true},
-    comments : {type : [] , default : []},
+    comments : {type : [commentSchema] , default : []},
     likes : {type : [Types.ObjectId] , default : []},
     dislikes : {type : [Types.ObjectId] , default : []},
     bookmarks : {type : [Types.ObjectId] , default : []},
@@ -26,9 +27,8 @@ const productSchema = new Schema({
     discount : {type : Number , default : 0},
     count : {type : Number , default : 0},
     type : {type : String , required : true},
-    time : {type : String},
     format : {type : String},
-    teacher : {type : Types.ObjectId , required : true},
+    supplier : {type : Types.ObjectId , required : true},
     feature : {type : featureSchema},
 },{
     timestamps : true

@@ -6,6 +6,7 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const cors = require("cors");
 const { deleteJunkFilesAfterBreakUploading } = require("./utils/multer.utils");
+const { MY_LONGTERM_TOKEN } = require("./utils/constants.utils");
 
 class Application {
     #express = require("express");
@@ -33,6 +34,7 @@ class Application {
         this.#app.use(this.#express.static("./public"));
         this.#app.use("/api-docs" , swaggerUI.serve , swaggerUI.setup(swaggerJSDoc({
             swaggerDefinition : {
+                openapi: "3.0.0",
                 info : {
                     title : "Online Shop",
                     version : "1.0.0",
@@ -47,10 +49,22 @@ class Application {
                     {
                         url : `http://localhost:${this.#PORT}`
                     }
-                ]
+                ],
+                components: {
+                    securitySchemes : {
+                        BearerAuth : {
+                            type: "http",
+                            scheme: "bearer",
+                            bearerFormat: "JWT"
+                        }
+                    }
+                },
+                security : [{BearerAuth : []}]
             },
             apis : ["./app/routers/*/*.js"]
-        })))
+        }),
+            {explorer : true}
+        ))
     }
     configRedis = async () => {
         const {redisClient} = require("./utils/initRedis.utils");
