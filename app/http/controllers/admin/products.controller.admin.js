@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { productModel } = require("../../../models/products.model");
 const { badFieldsOrBadValuesFilter, createError } = require("../../../utils/functions.utils");
 
@@ -72,13 +73,19 @@ class AdminProductController {
     }
     removeProduct = async (req , res , next) => {
         try {
-            
+            const result = await productModel.findOneAndDelete({
+                _id : new mongoose.Types.ObjectId(req.params.id),
+            })
+            if(!result) throw createError(400 , "محصول مورد نظر یافت نشد");
+
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
                     message : "hi",
-                    data : {}
+                    data : {
+                        result
+                    }
                 }
             })
         } catch (error) {
@@ -87,13 +94,29 @@ class AdminProductController {
     }
     getAllProducts = async (req , res , next) => {
         try {
-            
+            const search = req?.query?.search ?? null;
+            let result = [];
+            if(search){
+                result = await productModel.find(
+                    {
+                        $text : {
+                            $search : search,
+                        }
+                    }
+                );
+            }else{
+                result = await productModel.find({});
+            }
+            if(result.length <= 0) throw createError(400 , "محصولی یافت نشد")
+
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
-                    data : {}
+                    message : "محصولات شما یافت شد",
+                    data : {
+                        result
+                    }
                 }
             })
         } catch (error) {
@@ -102,13 +125,19 @@ class AdminProductController {
     }
     getProductByID = async (req , res , next) => {
         try {
-            
+            const result = await productModel.findOne({
+                _id : new mongoose.Types.ObjectId(req.params.id),
+            })
+            if(!result) throw createError(400 , "محصول مورد نظر یافت نشد");
+
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
                     message : "hi",
-                    data : {}
+                    data : {
+                        result,
+                    }
                 }
             })
         } catch (error) {

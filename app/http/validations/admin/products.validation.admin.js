@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const { VALID_IMAGE_UPLOAD_FORMATS, MAX_IMAGE_UPLOAD_SIZE } = require("../../../utils/constants.utils");
 const path = require("path");
 
@@ -90,6 +90,11 @@ const addProductValidation = () => [
     }),
 ]
 
+const justMongoIDValidator = () => [
+    param("id").isMongoId().withMessage("شناسه محصول وارد شده مجاز نمیباشد"),
+]
+
 module.exports = {
     addProductValidation,
+    justMongoIDValidator,
 }

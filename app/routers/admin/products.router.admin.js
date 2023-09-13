@@ -1,6 +1,6 @@
 const { AdminProductController } = require("../../http/controllers/admin/products.controller.admin");
 const { parserMiddlewareByCustomField, expressValidatorMapper } = require("../../http/middlewares/public.middleware");
-const { addProductValidation } = require("../../http/validations/admin/products.validation.admin");
+const { addProductValidation, justMongoIDValidator } = require("../../http/validations/admin/products.validation.admin");
 const { uploadFile } = require("../../utils/multer.utils");
 
 const router = require("express").Router();
@@ -98,6 +98,86 @@ router.post("/add",
             addProductValidation(),
             expressValidatorMapper,
             AdminProductController.addProduct
+);
+
+/**
+ * @swagger
+ *  /admin/product/get-by-id/{id}:
+ *      get:
+ *          summary: get product by id
+ *          description: get product by id
+ *          tags: [Admin-Product]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  description: get product by inserted id
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              500:
+ *                  description: Internal Server Error
+ *          
+ */
+router.get("/get-by-id/:id",
+            justMongoIDValidator(),
+            expressValidatorMapper,
+            AdminProductController.getProductByID
+);
+
+/**
+ * @swagger
+ *  /admin/product/remove/{id}:
+ *      delete:
+ *          summary: remove product by id
+ *          description: remove product by id
+ *          tags: [Admin-Product]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  description: remove product by inserted id
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              500:
+ *                  description: Internal Server Error
+ *          
+ */
+router.delete("/remove/:id",
+            justMongoIDValidator(),
+            expressValidatorMapper,
+            AdminProductController.removeProduct
+);
+
+/**
+ * @swagger
+ *  /admin/product/all:
+ *      get:
+ *          summary: get all product
+ *          description: you can get all product or you can perform search with query
+ *          tags: [Admin-Product]
+ *          parameters:
+ *              -   in: query
+ *                  name: search
+ *                  type: string
+ *                  description: text for search in title,short-desc,total-desc
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              500:
+ *                  description: Internal Server Error
+ */
+router.get("/all",
+            AdminProductController.getAllProducts
 );
 
 module.exports = {

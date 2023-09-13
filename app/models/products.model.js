@@ -34,6 +34,8 @@ const productSchema = new Schema({
     timestamps : true
 })
 
+productSchema.index({title : "text", short_desc : "text" , total_desc : "text"})
+
 const productModel = model("product" , productSchema);
 
 module.exports = {

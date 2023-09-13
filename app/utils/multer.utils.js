@@ -13,7 +13,6 @@ const createUploadPathForMulter = () => {
 }
 
 const deleteJunkFilesAfterBreakUploading = (files) => {
-    console.log(files);
     if(Array.isArray(files) && files.length > 0){
         files.forEach(item => {
             if(fs.existsSync(item.path)){
