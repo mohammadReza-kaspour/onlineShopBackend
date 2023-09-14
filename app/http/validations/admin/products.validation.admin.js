@@ -1,6 +1,7 @@
 const { body, param } = require("express-validator");
 const { VALID_IMAGE_UPLOAD_FORMATS, MAX_IMAGE_UPLOAD_SIZE } = require("../../../utils/constants.utils");
 const path = require("path");
+const { default: mongoose } = require("mongoose");
 
 const addProductValidation = () => [
     body("title").isLength({min:2 , max:50}).withMessage("عنوان محصول باید بین 2 تا 50 کارکتر باشد"),
@@ -86,6 +87,12 @@ const addProductValidation = () => [
             if(!regex.test(value)) throw "ووردی وزن باید به صورت یک عدد صحیح یا اعشاری باشد";
         }
         
+        return true
+    }),
+    body("type").custom((value , {req}) => {
+        const validData = ["digital" , "physical"]
+        if(!validData.includes(value)) throw "نوع محصول باید دیجیتال یا فیزیکی باشد"
+
         return true
     }),
 ]
@@ -175,6 +182,14 @@ const updateProductValidation = () => [
             if(!regex.test(value)) throw "ووردی وزن باید به صورت یک عدد صحیح یا اعشاری باشد";
         }
         
+        return true
+    }),
+    body("type").custom((value , {req}) => {
+        if(!!value){
+            const validData = ["digital" , "physical"]
+            if(!validData.includes(value)) throw "نوع محصول باید دیجیتال یا فیزیکی باشد";
+        }
+
         return true
     }),
 ]

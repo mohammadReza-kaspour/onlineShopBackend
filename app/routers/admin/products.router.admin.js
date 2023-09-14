@@ -19,6 +19,7 @@ const router = require("express").Router();
  *                  -   price
  *                  -   discount
  *                  -   count
+ *                  -   type
  *              properties:
  *                  title:
  *                      type: string
@@ -49,6 +50,9 @@ const router = require("express").Router();
  *                      items:
  *                          type: string
  *                          format: binary
+ *                  type:
+ *                      type: string
+ *                      description: digital or physical
  *                  width:
  *                      type: string
  *                      description: width of product
@@ -61,6 +65,15 @@ const router = require("express").Router();
  *                  weight:
  *                      type: string
  *                      description: weight of product
+ *                  colors:
+ *                      type: array
+ *                      description: color of product
+ *                  model:
+ *                      type: array
+ *                      description: model of product
+ *                  madeIn:
+ *                      type: string
+ *                      description: madeIn of product
  *          UpdateProduct:
  *              type: object
  *              properties:
@@ -93,6 +106,9 @@ const router = require("express").Router();
  *                      items:
  *                          type: string
  *                          format: binary
+ *                  type:
+ *                      type: string
+ *                      description: digital or physical
  *                  width:
  *                      type: string
  *                      description: width of product
@@ -105,6 +121,15 @@ const router = require("express").Router();
  *                  weight:
  *                      type: string
  *                      description: weight of product
+ *                  colors:
+ *                      type: array
+ *                      description: color of product
+ *                  model:
+ *                      type: array
+ *                      description: model of product
+ *                  madeIn:
+ *                      type: string
+ *                      description: madeIn of product
  */
 
 /**
@@ -139,6 +164,8 @@ router.post("/add",
             uploadFile.array("images" , 10),
             parserMiddlewareByCustomField("tags",","),
             parserMiddlewareByCustomField("category",","),
+            parserMiddlewareByCustomField("model",","),
+            parserMiddlewareByCustomField("colors",","),
             addProductValidation(),
             expressValidatorMapper,
             AdminProductController.addProduct
@@ -255,6 +282,8 @@ router.put("/update/:id",
             uploadFile.array("images" , 10),
             parserMiddlewareByCustomField("tags",","),
             parserMiddlewareByCustomField("category",","),
+            parserMiddlewareByCustomField("model",","),
+            parserMiddlewareByCustomField("colors",","),
             updateProductValidation(),
             expressValidatorMapper,
             AdminProductController.editProduct

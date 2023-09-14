@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const { productModel } = require("../../../models/products.model");
 const { badFieldsOrBadValuesFilter, createError, copyObject } = require("../../../utils/functions.utils");
-const { createTypeAndFeature, addImageToDataIfExists } = require("../../../utils/products.utils");
+const { createFeature, addImageToDataIfExists } = require("../../../utils/products.utils");
 
 class AdminProductController {
     addProduct = async (req , res , next) => {
@@ -20,12 +20,13 @@ class AdminProductController {
                 "width",
                 "height",
                 "length",
+                "type"
             ];
 
-            data = createTypeAndFeature(copyObject(req.body) ,["weight","width","height","length","colors","model","madeIn"])
+            data = createFeature(copyObject(req.body) ,["weight","width","height","length","colors","model","madeIn"])
             data = addImageToDataIfExists(data , req);
-            data.supplier = req.user._id;
             data = badFieldsOrBadValuesFilter(data , validFields.concat(["supplier","feature","images","type"]));
+            data.supplier = req.user._id;
             
             const result = await productModel.create({...data});
             if(!result) throw createError(500 , "محصول مورد نظر اضافه نشد خطا در سیستم");
@@ -63,12 +64,14 @@ class AdminProductController {
                 "colors",
                 "model",
                 "madeIn",
+                "type"
             ];
 
-            data = createTypeAndFeature(copyObject(req.body) ,["weight","width","height","length","colors","model","madeIn"])
+            data = createFeature(copyObject(req.body) ,["weight","width","height","length","colors","model","madeIn"])
             data = addImageToDataIfExists(data , req);
+            data = badFieldsOrBadValuesFilter(data , validFields.concat(["supplier","feature","images"]));
+            if(Object.keys(data).length <= 0) throw createError(400 , "داده ای برای به روز رسانی وارد نشده است");
             data.supplier = req.user._id;
-            data = badFieldsOrBadValuesFilter(data , validFields.concat(["supplier","feature","images","type"]));
             
             const result = await productModel.findOneAndUpdate(
                 {
