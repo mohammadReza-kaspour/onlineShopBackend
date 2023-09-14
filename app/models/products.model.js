@@ -9,7 +9,6 @@ const featureSchema = new Schema({
     colors : {type : [String] , default : []},
     model : {type : [String] , default : []},
     madeIn : {type : String , default : ""},
-    length : {type : String , default : ""},
 })
 
 const productSchema = new Schema({

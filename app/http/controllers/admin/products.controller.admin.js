@@ -1,10 +1,12 @@
 const { default: mongoose } = require("mongoose");
 const { productModel } = require("../../../models/products.model");
-const { badFieldsOrBadValuesFilter, createError } = require("../../../utils/functions.utils");
+const { badFieldsOrBadValuesFilter, createError, copyObject } = require("../../../utils/functions.utils");
+const { createTypeAndFeature, addImageToDataIfExists } = require("../../../utils/products.utils");
 
 class AdminProductController {
     addProduct = async (req , res , next) => {
         try {
+            let data = {};
             const validFields = [
                 "title", 
                 "short_desc", 
@@ -20,27 +22,13 @@ class AdminProductController {
                 "length",
             ];
 
-            let data = badFieldsOrBadValuesFilter(req.body , validFields);
-
-            if(req.files.length > 0) data.images = req.files.map(item => item.path);
+            data = createTypeAndFeature(copyObject(req.body) ,["weight","width","height","length","colors","model","madeIn"])
+            data = addImageToDataIfExists(data , req);
             data.supplier = req.user._id;
-            
-            ((featureFields) => {
-                let featureValue = [];
-                let feature = {};
-                let type = "virtual";
-                featureFields.forEach(item => featureValue.push(!!data[item]?data[item]:""));
-                
-                for(let i=0; i< featureFields.length; i++) feature[featureFields[i]] = featureValue[i];
-                data.feature = badFieldsOrBadValuesFilter(feature , featureFields);
-                
-                if(Object.keys(data.feature).length > 0) type = "physical"
-                data.type = type
-                
-            })(["weight","width","height","length"])
+            data = badFieldsOrBadValuesFilter(data , validFields.concat(["supplier","feature","images","type"]));
             
             const result = await productModel.create({...data});
-            if(!result) throw createError(500 , "محصول مورد اضافه نشد خطا در سیستم");
+            if(!result) throw createError(500 , "محصول مورد نظر اضافه نشد خطا در سیستم");
             
             res.status(200).json({
                 statusCode : res.statusCode,
@@ -58,13 +46,48 @@ class AdminProductController {
     }
     editProduct = async (req , res , next) => {
         try {
+            let data = {};
+            const validFields = [
+                "title", 
+                "short_desc", 
+                "total_desc",
+                "tags",
+                "category",
+                "count",
+                "discount",
+                "price",
+                "weight",
+                "width",
+                "height",
+                "length",
+                "colors",
+                "model",
+                "madeIn",
+            ];
+
+            data = createTypeAndFeature(copyObject(req.body) ,["weight","width","height","length","colors","model","madeIn"])
+            data = addImageToDataIfExists(data , req);
+            data.supplier = req.user._id;
+            data = badFieldsOrBadValuesFilter(data , validFields.concat(["supplier","feature","images","type"]));
             
+            const result = await productModel.findOneAndUpdate(
+                {
+                    _id : new mongoose.Types.ObjectId(req.params.id),
+                },
+                {
+                    $set : data,
+                }
+            );
+            if(!result) throw createError(500 , "محصول مورد نظر یافت نشد");
+
             res.status(200).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
-                    data : {}
+                    message : "محصول مورد نظر به روز رسانی شد",
+                    data : {
+                        result
+                    }
                 }
             })
         } catch (error) {

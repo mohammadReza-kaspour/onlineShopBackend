@@ -31,13 +31,21 @@ const badFieldsOrBadValuesFilter = (data , acceptedFilds = []) => {
                 if(!badValues.includes(element)) return element;
             })
         }
+        if(Array.isArray(data[key]) && data[key].length <= 0) delete data[key];
+        if(!Array.isArray(data[key]) && typeof data[key] === "object" && Object.keys(data[key]).length <= 0) delete data[key];
+
     })
 
     return data;
 }
 
+const copyObject = (object) => {
+    return JSON.parse(JSON.stringify(object));
+}
+
 module.exports = {
     randomNumberGenerator,
     createError,
-    badFieldsOrBadValuesFilter
+    badFieldsOrBadValuesFilter,
+    copyObject
 }
