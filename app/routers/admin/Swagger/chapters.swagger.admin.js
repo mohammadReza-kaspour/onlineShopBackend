@@ -1,5 +1,4 @@
 /////schemas
-
 /**
  * @swagger
  *  components:
@@ -62,7 +61,7 @@
 
 
 /////routers
-
+//add chapter
 /**
  * @swagger
  *  /admin/chapter/add-chapter/{id}:
@@ -99,6 +98,61 @@
  *                              $ref: "#/definitions/PublicErrorDefinition"
  */
 
+//get all chapters
+/**
+ * @swagger
+ *  /admin/chapter/get-chapters/{id}:
+ *      get:
+ *          summary: get all chapters
+ *          description: get all chapters
+ *          tags: [Admin-Chapter]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  description: course id
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/GetChapters"
+ *              400:
+ *                  description: Bad Request
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
+ */
+
+//get chapter
+/**
+ * @swagger
+ *  /admin/chapter/get-chapter/{id}:
+ *      get:
+ *          summary: get chapter
+ *          description: get chapter
+ *          tags: [Admin-Chapter]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  description: chapter id
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/GetChapters"
+ *              400:
+ *                  description: Bad Request
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
+ */
 
 
 

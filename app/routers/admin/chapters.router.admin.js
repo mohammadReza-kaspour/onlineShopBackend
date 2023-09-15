@@ -11,17 +11,29 @@ router.put("/add-chapter/:id" ,
             AdminChapterController.createNewChapter
 );
 
+router.get("/get-chapters/:id" ,
+            justMongoIDValidator(),
+            expressValidatorMapper,
+            AdminChapterController.getAllChapters
+);
+
+router.get("/get-chapter/:id" ,
+            justMongoIDValidator(),
+            expressValidatorMapper,
+            AdminChapterController.getChapter
+);
+
 /**
  * @swagger
- *  /admin/chapter/get-chapters/{id}:
- *      get:
- *          summary: get all courses
- *          description: get all courses
+ *  /admin/chapter/remove/{id}:
+ *      delete:
+ *          summary: remove chapter
+ *          description: remove chapter
  *          tags: [Admin-Chapter]
  *          parameters:
  *              -   in: path
  *                  name: id
- *                  description: course id
+ *                  description: chapter id
  *                  type: string
  *          responses:
  *              200:
@@ -29,7 +41,7 @@ router.put("/add-chapter/:id" ,
  *                  content:
  *                      applicstion/json:
  *                          schema:
- *                              $ref: "#/definitions/GetChapters"
+ *                              $ref: "#/definitions/PublicSuccessDefinition"
  *              400:
  *                  description: Bad Request
  *                  content:
@@ -37,11 +49,12 @@ router.put("/add-chapter/:id" ,
  *                          schema:
  *                              $ref: "#/definitions/PublicErrorDefinition"
  */
-router.get("/get-chapters/:id" ,
+router.delete("/remove/:id" ,
             justMongoIDValidator(),
             expressValidatorMapper,
-            AdminChapterController.getAllChapters
+            AdminChapterController.removeChapter
 );
+
 
 module.exports = {
     adminChapterRoutes : router,
