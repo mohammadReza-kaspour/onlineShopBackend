@@ -1,4 +1,4 @@
-//schemas section
+/////schemas section
 
 /**
  * @swagger
@@ -56,6 +56,9 @@
  *                          -   cash
  *                          -   vip
  */
+
+///// definition section
+
 /**
  * @swagger
  *  definitions:
@@ -126,6 +129,9 @@
  *  description: admin course panel
  */
 
+/////routers
+
+//get all courses
 /**
  * @swagger
  *  /admin/course/all:
@@ -147,10 +153,13 @@
  *                              $ref: "#/definitions/GetAllCourses"
  *              400:
  *                  description: Bad Request
- *              500:
- *                  description: Internal Server Error
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
  */
 
+//add course
 /**
  * @swagger
  *  /admin/course/add-course:
@@ -167,12 +176,19 @@
  *          responses:
  *              200:
  *                  description: Success
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/GetAllCourses"
  *              400:
  *                  description: Bad Request
- *              500:
- *                  description: Internal Server Error
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
  */
 
+//get course by id
 /**
  * @swagger
  *  /admin/course/get-course/{id}:
@@ -188,9 +204,15 @@
  *          responses:
  *              200:
  *                  description: Success
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/GetAllCourses"
  *              400:
  *                  description: Bad Request
- *              500:
- *                  description: Internal Server Error
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
  */
 

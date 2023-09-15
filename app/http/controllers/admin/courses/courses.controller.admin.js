@@ -1,7 +1,7 @@
 const {StatusCodes} = require("http-status-codes");
-const { courseModel } = require("../../../models/courses.model");
-const { createError, badFieldsOrBadValuesFilter, copyObject } = require("../../../utils/functions.utils");
-const { addImageToDataIfExists } = require("../../../utils/courses.utils");
+const { courseModel } = require("../../../../models/courses.model");
+const { createError, badFieldsOrBadValuesFilter, copyObject } = require("../../../../utils/functions.utils");
+const { addImageToDataIfExists } = require("../../../../utils/courses.utils");
 const { default: mongoose } = require("mongoose");
 
 class AdminCourseController {
@@ -68,12 +68,22 @@ class AdminCourseController {
     }
     createNewChapter = async (req , res , next) => {
         try {
+            const {title , text} = req.body;
+            const courseID = new mongoose.Types.ObjectId(req.params.id);
+
+            await this.#findCourseById(courseID);
+            const result = await courseModel.updateOne(
+                {_id : courseID},
+                {$push : {chapters:{title , text , episodes:[]}}}
+            );
+            if(result.modifiedCount <= 0) throw createError(StatusCodes.INTERNAL_SERVER_ERROR , "متاسفانه چپتر اضافه نشد");
             
+
             res.status(StatusCodes.OK).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
+                    message : "چپتر با موفقیت اضافه شد",
                     data : {}
                 }
             })
@@ -146,6 +156,13 @@ class AdminCourseController {
         } catch (error) {
             next(error)
         }
+    }
+    #findCourseById = async (mongoID) => {
+        const result = await courseModel.findOne({
+            _id : mongoID,
+        });
+        if(!result) throw createError(StatusCodes.NOT_FOUND , "دوره مورد نظر یافت نشد");
+        return result;
     }
 }
 
