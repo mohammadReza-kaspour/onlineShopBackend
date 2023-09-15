@@ -1,3 +1,5 @@
+//schemas section
+
 /**
  * @swagger
  *  components:
@@ -54,6 +56,69 @@
  *                          -   cash
  *                          -   vip
  */
+/**
+ * @swagger
+ *  definitions:
+ *      GetAllCourses:
+ *          type: object
+ *          properties:
+ *              statusCode:
+ *                  type: integer
+ *                  example: 200
+ *              success:
+ *                  type: boolean
+ *                  example: true
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *                          example: محصول شما با موفقیت یافت شد
+ *                      data:
+ *                          type: object
+ *                          properties:
+ *                              result:
+ *                                  type: array
+ *                                  items:
+ *                                      type: object
+ *                                      properties:
+ *                                          _id:
+ *                                              type: string
+ *                                              example: 65037e7579657978b628157c
+ *                                          title:
+ *                                              type: string
+ *                                              example: wordpress course
+ *                                          short_desc:
+ *                                              type: string
+ *                                              example: this wordpress course .....
+ *                                          total_desc:
+ *                                              type: string
+ *                                              example: this wordpress course .....
+ *                                          images:
+ *                                              type: array
+ *                                              example: [public\uploads\2023\9\15\1694728162476.jpg,public\uploads\2023\9\15\1694728162476.jpg]
+ *                                          tags:
+ *                                              type: array
+ *                                              example: [tag1,tag2,tag3]
+ *                                          category:
+ *                                              type: array
+ *                                              example: [cat1,cat2,cat3]
+ *                                          price:
+ *                                              type: string
+ *                                              example: 100
+ *                                          discount:
+ *                                              type: string
+ *                                              example: 5   
+ *                                          status:
+ *                                              type: string
+ *                                              example: notstarted
+ *                                          type:
+ *                                              type: string
+ *                                              example: free
+ *                                          time:
+ *                                              type: string
+ *                                              example: 00:00:00
+ */
 
 /**
  * tags:
@@ -76,6 +141,10 @@
  *          responses:
  *              200:
  *                  description: Success
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/GetAllCourses"
  *              400:
  *                  description: Bad Request
  *              500:

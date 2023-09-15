@@ -61,7 +61,7 @@ class Application {
                 },
                 security : [{BearerAuth : []}]
             },
-            apis : ["./app/routers/*/*.js"]
+            apis : ["./app/routers/*/*/*.js"]
         }),
             {explorer : true}
         ))
