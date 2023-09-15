@@ -66,31 +66,6 @@ class AdminCourseController {
             next(error)
         }
     }
-    createNewChapter = async (req , res , next) => {
-        try {
-            const {title , text} = req.body;
-            const courseID = new mongoose.Types.ObjectId(req.params.id);
-
-            await this.#findCourseById(courseID);
-            const result = await courseModel.updateOne(
-                {_id : courseID},
-                {$push : {chapters:{title , text , episodes:[]}}}
-            );
-            if(result.modifiedCount <= 0) throw createError(StatusCodes.INTERNAL_SERVER_ERROR , "متاسفانه چپتر اضافه نشد");
-            
-
-            res.status(StatusCodes.OK).json({
-                statusCode : res.statusCode,
-                success : true,
-                data : {
-                    message : "چپتر با موفقیت اضافه شد",
-                    data : {}
-                }
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
     createNewEpisode = async (req , res , next) => {
         try {
             
