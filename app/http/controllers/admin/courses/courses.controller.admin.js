@@ -8,10 +8,47 @@ class AdminCourseController {
     getAllCourses = async (req , res , next) => {
         try {
             const search = req?.query?.search
-            let result = [];
+            let matchObject = {};
 
-            if(search) result = await courseModel.find({$text: {$search : search}});
-            else result = await courseModel.find({});
+            if(search) matchObject = {$text: {$search : search}};
+            const result = await courseModel.aggregate([
+
+                {
+                    $match : matchObject
+                },{
+                    $lookup : {
+                        from : "users",
+                        localField : "supplier",
+                        foreignField : "_id",
+                        pipeline : [
+                            {
+                                $project : {
+                                    _id : 1,
+                                    mobile : 1
+                                }
+                            }
+                        ],
+                        as: "supplier",
+                    }
+                },{
+                    $unwind : "$supplier",
+                },
+                {
+                    $lookup : {
+                        from : "categories",
+                        localField : "category",
+                        foreignField : "_id",
+                        pipeline : [
+                            {
+                                $project : {
+                                    title : 1
+                                }
+                            }
+                        ],
+                        as: "category",
+                    }
+                },
+            ])
             
             if(result.length <= 0) throw createError(StatusCodes.BAD_REQUEST , "دوره ای یافت نشد")
 
@@ -20,6 +57,7 @@ class AdminCourseController {
                 success : true,
                 data : {
                     message : "دوره ها با موفقیت یافت شد",
+                    foundedItem : result.length,
                     data : {
                         result
                     }
