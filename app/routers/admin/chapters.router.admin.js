@@ -23,18 +23,47 @@ router.get("/get-chapter/:id" ,
             AdminChapterController.getChapter
 );
 
+router.delete("/remove/:id" ,
+            justMongoIDValidator(),
+            expressValidatorMapper,
+            AdminChapterController.removeChapter
+);
 /**
  * @swagger
- *  /admin/chapter/remove/{id}:
- *      delete:
- *          summary: remove chapter
- *          description: remove chapter
+ *  components:
+ *      schemas:
+ *          EditChapter:
+ *              type: object
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: title of chapter
+ *                  text:
+ *                      type: string
+ *                      description: text of chapter
+ */
+
+/**
+ * @swagger
+ *  /admin/chapter/edit/{id}:
+ *      put:
+ *          summary: edit chapter
+ *          description: edit chapter
  *          tags: [Admin-Chapter]
  *          parameters:
  *              -   in: path
  *                  name: id
  *                  description: chapter id
  *                  type: string
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: "#/components/schemas/EditChapter"
+ *                  application/json:
+ *                      schema:
+ *                          $ref: "#/components/schemas/AddChapter"
  *          responses:
  *              200:
  *                  description: Success
@@ -49,10 +78,11 @@ router.get("/get-chapter/:id" ,
  *                          schema:
  *                              $ref: "#/definitions/PublicErrorDefinition"
  */
-router.delete("/remove/:id" ,
+
+router.put("/edit/:id" ,
             justMongoIDValidator(),
             expressValidatorMapper,
-            AdminChapterController.removeChapter
+            AdminChapterController.editChapter
 );
 
 

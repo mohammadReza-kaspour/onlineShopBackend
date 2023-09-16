@@ -84,8 +84,43 @@ class AdminChapterController{
                     $pull : {chapters : {_id : chapterID}}
                 }
             );
-            if(result.modifiedCount <= 0) throw createError(StatusCodes.INTERNAL_SERVER_ERROR,"به روز رسانی انجام نشد");
+            if(result.modifiedCount <= 0) throw createError(StatusCodes.INTERNAL_SERVER_ERROR,"حذف انجام نشد");
 
+            res.status(StatusCodes.OK).json({
+                statusCode : res.statusCode,
+                success : true,
+                data : {
+                    message : "حذف با موفقیت انجام شد",
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+    editChapter = async (req , res , next) => {
+        try {
+            //get required datas
+            const chapterID = new mongoose.Types.ObjectId(req.params.id);
+            let data = copyObject(req.body);
+            const validFields = ["title" , "text"];
+
+            //find chapter and return course
+            const course = await this.#findChapterById(chapterID);
+
+            //get chapter old datas and if we have new data replace it else put old data in update object
+            //we do this to prevent chapter properties from changing into empty or removing problem while updating
+            data = badFieldsOrBadValuesFilter(data , validFields);
+            const chapter = course.chapters.find(item => item._id.equals(chapterID));
+            validFields.forEach(item => {
+                if(!data?.[item]) data[item] = chapter[item];
+            })
+            const result = await courseModel.updateOne(
+                {"chapters._id" : chapterID},
+                {$set : {"chapters.$" : data}}
+            )
+            if(result.modifiedCount <= 0) throw createError(StatusCodes.INTERNAL_SERVER_ERROR,"به روز رسانی انجام نشد");
+            
+            //send response
             res.status(StatusCodes.OK).json({
                 statusCode : res.statusCode,
                 success : true,

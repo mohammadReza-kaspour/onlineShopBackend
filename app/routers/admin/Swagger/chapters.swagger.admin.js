@@ -154,7 +154,35 @@
  *                              $ref: "#/definitions/PublicErrorDefinition"
  */
 
+//rmove chapter
+/**
+ * @swagger
+ *  /admin/chapter/remove/{id}:
+ *      delete:
+ *          summary: remove chapter
+ *          description: remove chapter
+ *          tags: [Admin-Chapter]
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  description: chapter id
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicSuccessDefinition"
+ *              400:
+ *                  description: Bad Request
+ *                  content:
+ *                      applicstion/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
+ */
 
+//update chapter
 
 
 
