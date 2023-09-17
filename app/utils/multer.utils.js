@@ -2,7 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { createError } = require("./functions.utils");
-const { VALID_IMAGE_UPLOAD_FORMATS, MAX_IMAGE_UPLOAD_SIZE } = require("./constants.utils");
+const { VALID_IMAGE_UPLOAD_FORMATS, MAX_IMAGE_UPLOAD_SIZE, VALID_VIDEO_UPLOAD_FORMATS, MAX_VIDEO_UPLOAD_SIZE } = require("./constants.utils");
 
 const createUploadPathForMulter = () => {
     const date = new Date();
@@ -34,6 +34,14 @@ const fileFilter = (req,file,cb) => {
     }
     return cb(null , true);
 }
+const videoFilter = (req,file,cb) => {
+    if(!file?.originalname) return cb(null , null);
+    const ext = path.extname(file.originalname);
+    if(!VALID_VIDEO_UPLOAD_FORMATS.includes(ext)){
+        return cb(createError(400 , "فرمت فایل ارسال شده صحیح نمیباشد"));
+    }
+    return cb(null , true);
+}
 
 const storage = multer.diskStorage({
     destination: (req , file , cb) => {
@@ -49,8 +57,10 @@ const storage = multer.diskStorage({
 })
 
 const uploadFile = multer({storage, fileFilter , limits : {fileSize:MAX_IMAGE_UPLOAD_SIZE}});
+const uploadVideo = multer({storage, videoFilter , limits : {fileSize:MAX_VIDEO_UPLOAD_SIZE}});
 
 module.exports = {
     uploadFile,
+    uploadVideo,
     deleteJunkFilesAfterBreakUploading,
 }

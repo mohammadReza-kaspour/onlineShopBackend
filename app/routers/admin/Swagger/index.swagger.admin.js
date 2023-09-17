@@ -3,10 +3,12 @@
  *  tags:
  *      -   name: Admin-Panel
  *          description : admin panel routes
- *      -   name: Admin-Chapter
- *          description : chapter panel routes
  *      -   name: Admin-Course
  *          description : course panel routes  
+ *      -   name: Admin-Chapter
+ *          description : chapter panel routes
+ *      -   name: Admin-Episode
+ *          description : Episode panel routes
  *      -   name: Admin-Product
  *          description : Admin-Product routes 
  *      -   name: Admin-Blog

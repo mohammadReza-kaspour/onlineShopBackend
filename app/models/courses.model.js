@@ -6,6 +6,7 @@ const episode = new Schema({
     text: {type : String , required : true},
     type : {type : String , default : "free"},
     time: {type : String , required : true},
+    videoAddress : {type : String , required : true},
 })
 
 const chapter = new Schema({
