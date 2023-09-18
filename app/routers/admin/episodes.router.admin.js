@@ -1,20 +1,56 @@
 const { AdminEpisodeController } = require("../../http/controllers/admin/courses/episodes.controller.admin");
 const { expressValidatorMapper } = require("../../http/middlewares/public.middleware");
-const { addEpisodeValidation } = require("../../http/validations/admin/episodes.validation.admin");
-const { uploadFile, uploadVideo } = require("../../utils/multer.utils");
+const { addEpisodeValidation, justMongoIDValidator, updateEpisodeValidation } = require("../../http/validations/admin/episodes.validation.admin");
+const { uploadVideo } = require("../../utils/multer.utils");
 
 const router = require("express").Router();
+
+router.put("/add-episode/:chapterid",
+            uploadVideo.single("video"),
+            addEpisodeValidation(),
+            expressValidatorMapper,
+            AdminEpisodeController.addEpisode
+);
+
+/**
+ * @swagger
+ *  /admin/episode/remove/{episodeid}:
+ *      delete:
+ *          summary: delete episode
+ *          description: delete episode
+ *          tags: [Admin-Episode]
+ *          parameters:
+ *              -   in: path
+ *                  type: string
+ *                  required: true
+ *                  name: episodeid
+ *                  description: valid mongo id of episode
+ *          responses:
+ *              200:
+ *                  description: Success
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicSeccessDefinition"
+ *              400:
+ *                  description: Bad Request
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
+ */
+router.delete("/remove/:episodeid",
+            justMongoIDValidator("episodeid"),
+            expressValidatorMapper,
+            AdminEpisodeController.removeEpisode
+);
+
 /**
  * @swagger
  *  components:
  *      schemas:
- *          AddEpisode:
+ *          UpdateEpisode:
  *              type: object
- *              required:
- *                  -   title
- *                  -   text
- *                  -   type
- *                  -   video
  *              properties:
  *                  title:
  *                      type: string
@@ -37,30 +73,30 @@ const router = require("express").Router();
 
 /**
  * @swagger
- *  /admin/episode/add-episode/{chapterid}:
+ *  /admin/episode/edit/{episodeid}:
  *      put:
- *          summary: add episode
- *          description: add episode with chapter id
+ *          summary: edit episode
+ *          description: edit episode
  *          tags: [Admin-Episode]
  *          parameters:
  *              -   in: path
  *                  type: string
  *                  required: true
- *                  name: chapterid
- *                  description: chapter id
+ *                  name: episodeid
+ *                  description: valid mongo id of episode
  *          requestBody:
  *              required: true
  *              content:
  *                  multipart/form-data:
  *                      schema:
- *                          $ref: "#/components/schemas/AddEpisode"
+ *                          $ref: "#/components/schemas/UpdateEpisode"
  *          responses:
  *              200:
  *                  description: Success
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: "#/definitions/PublicSuccessDefinition"
+ *                              $ref: "#/definitions/PublicSeccessDefinition"
  *              400:
  *                  description: Bad Request
  *                  content:
@@ -68,11 +104,11 @@ const router = require("express").Router();
  *                          schema:
  *                              $ref: "#/definitions/PublicErrorDefinition"
  */
-router.put("/add-episode/:chapterid",
+router.put("/edit/:episodeid",
             uploadVideo.single("video"),
-            addEpisodeValidation(),
+            updateEpisodeValidation(),
             expressValidatorMapper,
-            AdminEpisodeController.addEpisode
+            AdminEpisodeController.updateEpisode
 );
 
 
