@@ -1,5 +1,6 @@
 const { Schema, Types, model } = require("mongoose");
 const { commentSchema } = require("./publicSchema.model");
+const { BASE_URL, PORT } = require("../utils/constants.utils");
 
 const featureSchema = new Schema({
     length : {type : String , default : ""},
@@ -30,9 +31,18 @@ const productSchema = new Schema({
     supplier : {type : Types.ObjectId , required : true},
     feature : {type : featureSchema},
 },{
-    timestamps : true
-})
-
+    timestamps : true,
+    toJSON : {virtuals:true}
+});
+productSchema.virtual("imagesURL").get(function (){
+    let URLList = []
+    if(this.images.length > 0){
+        this.images.forEach(item => {
+            URLList.push(`${BASE_URL}:${PORT}/${item.split("\\").slice(1,).join("/")}`);
+        })
+    }
+    return URLList;
+});
 productSchema.index({title : "text", short_desc : "text" , total_desc : "text"})
 
 const productModel = model("product" , productSchema);

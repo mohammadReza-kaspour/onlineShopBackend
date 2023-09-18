@@ -1,5 +1,6 @@
 const { Schema, Types, model, default: mongoose } = require("mongoose");
 const { commentSchema } = require("./publicSchema.model");
+const { BASE_URL, PORT } = require("../utils/constants.utils");
 
 const episode = new Schema({
     title : {type : String , required : true},
@@ -7,7 +8,10 @@ const episode = new Schema({
     type : {type : String , default : "free"},
     time: {type : String , required : true},
     videoAddress : {type : String , required : true},
-})
+} , {toJSON : {virtuals:true}});
+episode.virtual("videoURL").get(function (){
+    return `${BASE_URL}:${PORT}/${this.videoAddress.split("\\").slice(1,).join("/")}`;
+});
 
 const chapter = new Schema({
     title : {type : String , required : true},
@@ -35,8 +39,18 @@ const courseSchema = new Schema({
     chapters : {type : [chapter] , default : []},
     students : {type : [Types.ObjectId] , default : []},
 },{
-    timestamps : true
-})
+    timestamps : true,
+    toJSON : {virtuals:true}
+});
+courseSchema.virtual("imagesURL").get(function (){
+    let URLList = []
+    if(this.images.length > 0){
+        this.images.forEach(item => {
+            URLList.push(`${BASE_URL}:${PORT}/${item.split("\\").slice(1,).join("/")}`);
+        })
+    }
+    return URLList;
+});
 courseSchema.index({title:"text" , short_desc:"text" , total_desc:"text"});
 
 const courseModel = model("course" , courseSchema);

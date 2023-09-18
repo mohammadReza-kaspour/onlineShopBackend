@@ -115,6 +115,16 @@ class AdminEpisodeController{
         }
     }
 
+    test = (req , res , next) => {
+        try {
+            console.log(req.headers.origin);
+
+            res.send("ok")
+        } catch (error) {
+            next(error)
+        }
+    }
+
     #findCourseById = async (mongoID) => {
         const result = await courseModel.findOne({
             _id : mongoID,

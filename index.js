@@ -1,3 +1,4 @@
 const { Application } = require("./app/server");
+const { PORT } = require("./app/utils/constants.utils");
 
-new Application(3000 , "mongodb://127.0.0.1:27017/OnlineShop");
+new Application(PORT , "mongodb://127.0.0.1:27017/OnlineShop");
