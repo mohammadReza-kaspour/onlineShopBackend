@@ -83,7 +83,7 @@ class AdminCourseController {
             ];
 
             data = copyObject(req.body);
-            data = addImageToDataIfExists(data , req);
+            data = addImageToDataIfExists(data , req , true);
             data = badFieldsOrBadValuesFilter(data , validFields);
             data.supplier = req.user._id;
 
@@ -121,13 +121,39 @@ class AdminCourseController {
     }
     editCourse = async (req , res , next) => {
         try {
-            
+            const courseID = new mongoose.Types.ObjectId(req.params.courseid);
+            let data = {};
+            const validFields = [
+                "title",
+                "short_desc",
+                "total_desc",
+                "tags",
+                "category",
+                "price",
+                "discount",
+                "type",
+                "images"
+            ];
+
+            data = copyObject(req.body);
+            data = addImageToDataIfExists(data , req , false);
+            data = badFieldsOrBadValuesFilter(data , validFields);
+            data.supplier = req.user._id;
+
+            await this.#findCourseById(courseID)
+            const result = await courseModel.updateOne(
+                {_id : courseID},
+                {
+                    $set : data,
+                }
+            );
+            if(result.modifiedCount <= 0) throw createError(StatusCodes.INTERNAL_SERVER_ERROR,"به روز رسانی انجام نشد");
+
             res.status(StatusCodes.OK).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
-                    data : {}
+                    message : "به روز رسانی با موفقیت انجام شد",
                 }
             })
         } catch (error) {
