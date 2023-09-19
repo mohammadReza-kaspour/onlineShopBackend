@@ -19,8 +19,9 @@ const userSchema = new Schema({
     roles : {type : [String] , default : ["USER"]},
     courses : {type : [Types.ObjectId] , default : []},
 },{
-    timestamps : true
+    timestamps : true,
 })
+userSchema.index({firstName:"text",lastName:"text",username:"text",mobile:"text",email:"text"});
 
 const userModel = model("user" , userSchema);
 
