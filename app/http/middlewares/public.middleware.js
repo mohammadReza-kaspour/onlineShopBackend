@@ -86,17 +86,6 @@ const swaggerFreeObjectFixer = (req , res , next) => {
     }
 }
 
-const checkRole = (role) => {
-    return (req , res , next) => {
-        try {
-            if(!req.user.roles.includes(role)) throw createError(403 , "دسترسی به این قسمت برای شما مجاز نمیباشد");
-            next()
-        } catch (error) {
-            next(error)
-        }
-    }
-}
-
 const parserMiddlewareByCustomField = (field , seperator) => {
     const parserMiddleware = (req , res , next) => {
         try {
@@ -108,10 +97,12 @@ const parserMiddlewareByCustomField = (field , seperator) => {
                 if(Array.isArray(inputField)){
                     req.body[field] = inputField.filter(item => {if(!!item.trim()) return item})
                     .map(item => item.trim());
+                    req.body[field] = Array.from(new Set(req.body[field])); //remove duplicated items
                 }
                 else if(typeof inputField === "string"){
                     req.body[field] = inputField.split(seperator).filter(item => {if(!!item.trim()) return item})
                         .map(item => item.trim());
+                    req.body[field] = Array.from(new Set(req.body[field])); //remove duplicated items
                 }
 
             }else req.body[field] = [];
@@ -129,6 +120,5 @@ module.exports = {
     checkAccessTokenToLoggin,
     checkRefreshTokenToLogin,
     swaggerFreeObjectFixer,
-    checkRole,
     parserMiddlewareByCustomField,
 }

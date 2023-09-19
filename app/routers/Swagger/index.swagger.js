@@ -42,6 +42,8 @@
  *  tags:
  *      -   name: Admin-Panel
  *          description : admin panel routes
+ *      -   name: Admin-RBAC
+ *          description : Role Base Access Controll System
  *      -   name: Admin-UserController
  *          description : user controller routes
  *      -   name: Admin-Course

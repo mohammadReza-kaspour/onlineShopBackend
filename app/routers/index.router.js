@@ -8,7 +8,7 @@ const router = require("express").Router();
 
 router.use("/" , apiAllRoutes);
 router.use("/user" , userAllRoutes);
-router.use("/admin" , checkAccessTokenToLoggin , checkRole(ROLES.ADMIN) , adminAllRoutes);
+router.use("/admin" , checkAccessTokenToLoggin , adminAllRoutes);
 
 module.exports = {
     allRoutes : router,

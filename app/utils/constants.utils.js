@@ -9,13 +9,22 @@ module.exports = {
     REFRESH_TOKEN_SECRET : md5("mohammad2"),
     REFRESH_TOKEN_EXPIRE : "1y",
 
-    ROLES : {
-        USER : "USER",
+    ROLES : Object.freeze({
+        SUPER_USER : "SUPER_USER",
         ADMIN : "ADMIN",
-        WRITER : "WRITER",
-        TEACHER : "TEACHER",
+        CONTENT_MANAGER : "CONTENT_MANAGER",
         SUPPLIER : "SUPPLIER",
-    },
+        TEACHER : "TEACHER",
+        USER : "USER",
+    }),
+    PERMISSIONS : Object.freeze({
+        SUPER_USER : ["super-user"],
+        ADMIN : ["admin"],
+        CONTENT_MANAGER : ["course","blog","category","product"],
+        SUPPLIER : ["product"],
+        TEACHER : ["course","blog"],
+        USER : ["profile"],
+    }),
 
     VALID_IMAGE_UPLOAD_FORMATS : [".jpg" , ".jpeg" , ".webp" , ".png"],
     MAX_IMAGE_UPLOAD_SIZE : 2*1000*1000, //byte

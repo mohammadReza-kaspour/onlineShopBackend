@@ -16,7 +16,7 @@ const userSchema = new Schema({
     bills : {type : []},
     discount : {type : Number , default : 0},
     birthday : {type : String},
-    roles : {type : [String] , default : ["USER"]},
+    role : {type : String , default : "USER"},
     courses : {type : [Types.ObjectId] , default : []},
 },{
     timestamps : true,
