@@ -1,6 +1,7 @@
 const { Schema, Types, model, default: mongoose } = require("mongoose");
 const { commentSchema } = require("./publicSchema.model");
 const { BASE_URL, PORT } = require("../utils/constants.utils");
+const { getSumOfTimes } = require("../utils/courses.utils");
 
 const episode = new Schema({
     title : {type : String , required : true},
@@ -34,7 +35,6 @@ const courseSchema = new Schema({
     discount : {type : Number , default : 0},
     status : {type : String , default: "notstarted"},//notstarted , finished , ongoing
     type : {type : String , required : true , default: "free"}, //free-cash-vip
-    time : {type : String , default: "00:00:00"},
     supplier : {type : Types.ObjectId , required : true},
     chapters : {type : [chapter] , default : []},
     students : {type : [Types.ObjectId] , default : []},
@@ -51,6 +51,9 @@ courseSchema.virtual("imagesURL").get(function (){
     }
     return URLList;
 });
+courseSchema.virtual("totalTime").get(function(){
+    return getSumOfTimes(this);
+})
 courseSchema.index({title:"text" , short_desc:"text" , total_desc:"text"});
 
 const courseModel = model("course" , courseSchema);
