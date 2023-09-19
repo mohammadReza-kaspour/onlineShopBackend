@@ -162,13 +162,15 @@ class AdminCourseController {
     }
     deleteCourse = async (req , res , next) => {
         try {
-            
+            const courseID = new mongoose.Types.ObjectId(req.params.courseid);
+            const result = await courseModel.deleteOne({_id:courseID})
+            if(result.deletedCount <= 0) throw createError(StatusCodes.BAD_REQUEST,"دوره حذف نشد");
+
             res.status(StatusCodes.OK).json({
                 statusCode : res.statusCode,
                 success : true,
                 data : {
-                    message : "hi",
-                    data : {}
+                    message : "دوره با موفقیت حذف شد",
                 }
             })
         } catch (error) {

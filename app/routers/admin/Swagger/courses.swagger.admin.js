@@ -292,4 +292,31 @@
  *                              $ref: "#/definitions/PublicErrorDefinition"
  */
 
+//delete course
+/**
+ * @swagger
+ *  /admin/course/remove/{courseid}:
+ *      delete:
+ *          summary: remove course
+ *          description: remove course
+ *          tags: [Admin-Course]
+ *          parameters:
+ *              -   in: path
+ *                  type: string
+ *                  required: true
+ *                  name: courseid
+ *          responses:
+ *              200:
+ *                  description: Seccess
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicSuccessDefinition"
+ *              400:
+ *                  description: Bad Request
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/definitions/PublicErrorDefinition"
+ */
 

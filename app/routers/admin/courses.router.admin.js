@@ -17,7 +17,7 @@ router.post("/add-course" ,
             AdminCourseController.createNewCourse
 );
 router.get("/get-course/:id" ,
-            justMongoIDValidator(),
+            justMongoIDValidator("id"),
             expressValidatorMapper,
             AdminCourseController.getCourse
 );
@@ -29,7 +29,11 @@ router.put("/edit/:courseid" ,
             expressValidatorMapper,
             AdminCourseController.editCourse
 );
-
+router.delete("/remove/:courseid" ,
+            justMongoIDValidator("courseid"),
+            expressValidatorMapper,
+            AdminCourseController.deleteCourse
+);
 
 
 module.exports = {

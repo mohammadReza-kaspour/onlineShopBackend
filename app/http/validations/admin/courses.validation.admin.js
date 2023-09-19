@@ -52,8 +52,8 @@ const addCourseValidation = () => [
     }),
 ]
 
-const justMongoIDValidator = () => [
-    param("id").isMongoId().withMessage("شناسه محصول وارد شده مجاز نمیباشد"),
+const justMongoIDValidator = (fieldName) => [
+    param(fieldName).isMongoId().withMessage("شناسه محصول وارد شده مجاز نمیباشد"),
 ]
 
 const updateCourseValidation = (fieldName) => [
