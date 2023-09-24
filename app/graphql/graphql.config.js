@@ -1,4 +1,4 @@
-const { graphQLSchema } = require("./index.resolver");
+const { graphQLSchema } = require("./index.graphql");
 
 const graphQLConfig = (req , res) => ({
     schema : graphQLSchema,
@@ -8,5 +8,5 @@ const graphQLConfig = (req , res) => ({
 })
 
 module.exports = {
-    graphQLConfig,
+    graphQLConfig, 
 }

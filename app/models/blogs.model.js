@@ -10,9 +10,9 @@ const blogSchema = new Schema({
     tags : {type : [String] , default : []},
     category : {type : [Types.ObjectId] , required : true , default : []},
     comments : {type : [commentSchema] , default : []},
-    likes : {type : [Types.ObjectId] , ref:"users" , default : []},
-    dislikes : {type : [Types.ObjectId] , ref:"users" , default : []},
-    bookmarks : {type : [Types.ObjectId] , ref:"users" , default : []},
+    likes : {type : [Types.ObjectId] , default : []},
+    dislikes : {type : [Types.ObjectId] , default : []},
+    bookmarks : {type : [Types.ObjectId] , default : []},
 },{
     timestamps : true,
     versionKey : false,

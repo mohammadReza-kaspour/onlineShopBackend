@@ -11,7 +11,7 @@ const router = require("express").Router();
 router.use("/" , apiAllRoutes);
 router.use("/user" , userAllRoutes);
 router.use("/admin" , checkAccessTokenToLoggin , adminAllRoutes);
-router.use("/graphql" , graphqlHTTP(graphQLConfig));
+router.use("/graphql" , graphqlHTTP(graphQLConfig)); 
 
 module.exports = {
     allRoutes : router,
