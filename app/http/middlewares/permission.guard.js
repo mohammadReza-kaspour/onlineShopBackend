@@ -12,6 +12,8 @@ const checkPermission = (requiredPermissionByRole = []) => {
             if(!role) throw createError(400 , "این نقش در سیستم ایجاد نشده است");
             const permissions = await permissionModel.find({_id : {$in : role.permissions}})
             if(permissions.length <= 0) throw createError(400 , "این نقش در سیستم هیچ دسترسی ای ندارد");
+            const userPermissions = permissions.map(item => item.title);
+
             
             let Access = false;
             let loopResult = false;
