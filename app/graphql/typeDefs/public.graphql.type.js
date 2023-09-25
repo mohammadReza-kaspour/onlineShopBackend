@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLList } = require("graphql");
 
 const publicAuthorType = new GraphQLObjectType({
     name : "publicAuthorType",
@@ -16,8 +16,30 @@ const publicCategoryType = new GraphQLObjectType({
         parent : {type : GraphQLString},
     }
 })
+const publicFeatureType = new GraphQLObjectType({
+    name : "publicFeatureType",
+    fields : {
+        length : {type : GraphQLString},
+        height : {type : GraphQLString},
+        width : {type : GraphQLString},
+        weight : {type : GraphQLString},
+        colors : {type : new GraphQLList(GraphQLString)},
+        model : {type : new GraphQLList(GraphQLString)},
+        madeIn : {type : GraphQLString}, 
+    }
+})
+const publicSupplierType = new GraphQLObjectType({
+    name : "publicSupplierType",
+    fields : {
+        _id : {type : GraphQLString},
+        firstName : {type : GraphQLString},
+        lastName : {type : GraphQLString},
+    }
+})
 
 module.exports = {
     publicAuthorType,
     publicCategoryType,
+    publicFeatureType,
+    publicSupplierType
 }

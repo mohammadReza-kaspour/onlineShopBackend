@@ -19,7 +19,7 @@ module.exports = {
     }),
     PERMISSIONS : Object.freeze({
         SUPER_USER : ["super-user"],
-        ADMIN : ["admin"],
+        ADMIN : ["course","blog","category","product","profile"],
         CONTENT_MANAGER : ["course","blog","category","product"],
         SUPPLIER : ["product"],
         TEACHER : ["course","blog"],
