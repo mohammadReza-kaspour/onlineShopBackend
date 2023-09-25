@@ -16,6 +16,15 @@ const publicCategoryType = new GraphQLObjectType({
         parent : {type : GraphQLString},
     }
 })
+const publicCategoryChildrenType = new GraphQLObjectType({
+    name : "publicCategoryChildrenType",
+    fields : {
+        _id : {type : GraphQLString},
+        title : {type : GraphQLString},
+        parent : {type : GraphQLString},
+        depth : {type : GraphQLString},
+    }
+})
 const publicFeatureType = new GraphQLObjectType({
     name : "publicFeatureType",
     fields : {
@@ -37,9 +46,11 @@ const publicSupplierType = new GraphQLObjectType({
     }
 })
 
+
 module.exports = {
     publicAuthorType,
     publicCategoryType,
     publicFeatureType,
-    publicSupplierType
+    publicSupplierType,
+    publicCategoryChildrenType
 }
