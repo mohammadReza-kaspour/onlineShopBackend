@@ -1,0 +1,36 @@
+# get all categories
+{
+  categories{
+    _id
+    title
+    parent{
+      _id
+      title
+    }
+    children{
+      _id
+      title
+      parent
+      depth
+    }
+  }
+
+}
+# get category by id
+{
+  categories(id:"64f8f627ae308146ab8e3bf9"){
+    _id
+    title
+    parent{
+      _id
+      title
+    }
+    children{
+      _id
+      title
+      parent
+      depth
+    }
+  }
+
+}

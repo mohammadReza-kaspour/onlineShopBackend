@@ -1,0 +1,42 @@
+{
+  courses(id : "65037fd4cedbf8fb6d5647b3"){
+    _id
+    title
+    short_desc
+    total_desc
+    images
+    tags 
+    category{
+      _id
+      title
+      parent
+    }
+    price
+    discount
+    status
+    type
+    supplier{
+      _id
+      firstName
+      lastName
+    }
+    students{
+      _id
+      firstName
+      lastName
+    }
+    chapters{
+      _id
+      title
+      text
+      episodes{
+        _id
+        title
+        text
+        type
+        time
+        videoAddress
+      }
+    }
+  }
+}

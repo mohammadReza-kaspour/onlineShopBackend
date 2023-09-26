@@ -4,7 +4,7 @@ const { blogModel } = require("../../models/blogs.model");
 
 const blogResolver = {
     type : new GraphQLList(blogType),
-    resolve : async () => {
+    resolve : async (obj , args , context , info) => {
         return await blogModel.aggregate([
             {
                 $match : {},

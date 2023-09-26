@@ -45,6 +45,26 @@ const publicSupplierType = new GraphQLObjectType({
         lastName : {type : GraphQLString},
     }
 })
+const publicEpisodeType = new GraphQLObjectType({
+    name : "publicEpisodeType",
+    fields : {
+        _id : {type : GraphQLString},
+        title : {type : GraphQLString},
+        text: {type : GraphQLString},
+        type : {type : GraphQLString},
+        time: {type : GraphQLString},
+        videoAddress : {type : GraphQLString},
+    }
+})
+const publicChapterType = new GraphQLObjectType({
+    name : "publicChapterType",
+    fields : {
+        _id : {type : GraphQLString},
+        title : {type : GraphQLString},
+        text: {type : GraphQLString},
+        episodes : {type : new GraphQLList(publicEpisodeType)},
+    }
+})
 
 
 module.exports = {
@@ -52,5 +72,6 @@ module.exports = {
     publicCategoryType,
     publicFeatureType,
     publicSupplierType,
-    publicCategoryChildrenType
+    publicCategoryChildrenType,
+    publicChapterType
 }
