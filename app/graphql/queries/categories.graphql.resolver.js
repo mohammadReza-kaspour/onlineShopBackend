@@ -9,9 +9,7 @@ const categoryResolver = {
         id : {type : GraphQLString},
     },
     resolve : async (obj , args , context , info) => {
-        const {id} = args;
-        let searchTemplate = {parent : undefined}
-        if(id) searchTemplate = {_id : new mongoose.Types.ObjectId(id)}
+        const searchTemplate = args?.id ? {_id : new mongoose.Types.ObjectId(args.id)} : {};
         
         const result =  await categoryModel.aggregate([
             {

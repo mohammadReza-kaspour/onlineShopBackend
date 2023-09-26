@@ -1,13 +1,25 @@
-const { GraphQLList } = require("graphql");
+const { GraphQLList, GraphQLString } = require("graphql");
 const { productType } = require("../typeDefs/products.graphql.type");
 const { productModel } = require("../../models/products.model");
+const { default: mongoose } = require("mongoose");
 
 const productResolver = {
     type : new GraphQLList(productType),
+    args : {
+        id : {type : GraphQLString},
+        category : {type : GraphQLString},
+    },
     resolve : async () => {
+        const searchTemplate1 = args?.id ? {_id : new mongoose.Types.ObjectId(args.id)} : {};
+        const searchTemplate2 = args?.category ? {category : new mongoose.Types.ObjectId(args.category)} : {};
         return await productModel.aggregate([
             {
-                $match : {}
+                $match : {
+                    $and : [
+                        searchTemplate1,
+                        searchTemplate2,
+                    ]
+                }
             },{
                 $lookup : {
                     from : "categories",

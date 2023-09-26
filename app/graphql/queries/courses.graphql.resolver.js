@@ -7,13 +7,20 @@ const courseResolver = {
     type : new GraphQLList(courseType),
     args : {
         id : {type : GraphQLString},
+        category : {type : GraphQLString},
     },
     resolve : async (_,args) => {
-        let searchTemplate = {}
-        if(args.id) searchTemplate = {_id : new mongoose.Types.ObjectId(args.id)};
+        const searchTemplate1 = args?.id ? {_id : new mongoose.Types.ObjectId(args.id)} : {};
+        const searchTemplate2 = args?.category ? {category : new mongoose.Types.ObjectId(args.category)} : {};
+
         return courseModel.aggregate([
             {
-                $match : searchTemplate
+                $match : {
+                    $and : [
+                        searchTemplate1,
+                        searchTemplate2,
+                    ]
+                }
             },
             {
                 $lookup : {
