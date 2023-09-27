@@ -1,0 +1,29 @@
+mutation{
+  createCommentForBlog
+		(comment:"محصول خوبی بود",
+		courseID:"65037e7579657978b628157c",
+    parent:""){
+    statusCode
+    message
+  }
+}
+
+mutation{
+  createCommentForProduct
+		(comment:"محصول خوبی بود",
+		courseID:"65037e7579657978b628157c",
+    parent:""){
+    statusCode
+    message
+  }
+}
+
+mutation{
+  createCommentForCourse
+		(comment:"محصول خوبی بود",
+		courseID:"65037e7579657978b628157c",
+    parent:""){
+    statusCode
+    message
+  }
+}

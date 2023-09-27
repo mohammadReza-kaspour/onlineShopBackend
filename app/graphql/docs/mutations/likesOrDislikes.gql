@@ -1,0 +1,29 @@
+# want to like : false means dislike
+# twice doing action means undo that action 
+
+mutation{
+  likeOrDislikeForBlog
+		(wantToLike : false,
+		courseID:"65037e7579657978b628157c"){
+    statusCode
+    message
+  }
+}
+
+mutation{
+  likeOrDislikeForProduct
+		(wantToLike : false,
+		courseID:"65037e7579657978b628157c"){
+    statusCode
+    message
+  }
+}
+
+mutation{
+  likeOrDislikeForCourse
+		(wantToLike : false,
+		courseID:"65037e7579657978b628157c"){
+    statusCode
+    message
+  }
+}

@@ -38,5 +38,15 @@
         videoAddress
       }
     }
+    comments{
+      _id
+      comment
+      parent
+      show
+      section
+      createdAt
+    }
+    likes
+    dislikes
   }
 }

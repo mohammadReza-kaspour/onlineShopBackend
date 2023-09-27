@@ -20,6 +20,8 @@ const courseType = new GraphQLObjectType({
         students : {type : new GraphQLList(publicUserType)},
         chapters : {type : new GraphQLList(publicChapterType)},
         comments : {type : new GraphQLList(commentType)},
+        likes : {type : new GraphQLList(GraphQLString)},
+        dislikes : {type : new GraphQLList(GraphQLString)},
     }
 })
 

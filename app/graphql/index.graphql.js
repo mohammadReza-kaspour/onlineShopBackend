@@ -3,7 +3,8 @@ const { blogResolver } = require("./queries/blogs.graphql.resolver");
 const { productResolver } = require("./queries/products.graphql.resolver");
 const { categoryResolver } = require("./queries/categories.graphql.resolver");
 const { courseResolver } = require("./queries/courses.graphql.resolver");
-const { createCommentForBlogResolver, createCommentForProductResolver, createCommentForCourseResolver } = require("./queries/comments.graphql.resolver");
+const { createCommentForBlogResolver, createCommentForProductResolver, createCommentForCourseResolver } = require("./mutations/comments.graphql.resolver");
+const { likesOrDislikesForBlogResolver, likesOrDislikesForProductResolver, likesOrDislikesForCourseResolver } = require("./mutations/likesOrDislikes.graphql.resolver");
 
 const rootQuery = new GraphQLObjectType({
     name : "rootQuery",
@@ -21,6 +22,10 @@ const rootMutation = new GraphQLObjectType({
         createCommentForBlog : createCommentForBlogResolver,
         createCommentForProduct : createCommentForProductResolver,
         createCommentForCourse : createCommentForCourseResolver,
+
+        likeOrDislikeForBlog : likesOrDislikesForBlogResolver,
+        likeOrDislikeForProduct : likesOrDislikesForProductResolver,
+        likeOrDislikeForCourse : likesOrDislikesForCourseResolver,
     }
 })
 
