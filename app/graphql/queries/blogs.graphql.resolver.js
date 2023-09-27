@@ -12,7 +12,7 @@ const blogResolver = {
     resolve : async (obj , args , context , info) => {
         const searchTemplate1 = args?.id ? {_id : new mongoose.Types.ObjectId(args.id)} : {};
         const searchTemplate2 = args?.category ? {category : new mongoose.Types.ObjectId(args.category)} : {};
-        return await blogModel.aggregate([
+        const result= await blogModel.aggregate([
             {
                 $match : {
                     $and : [
@@ -28,7 +28,10 @@ const blogResolver = {
                     as : "author",
                 }
             },{
-                $unwind : "$author",
+                $unwind : {
+                    path : "$author",
+                    preserveNullAndEmptyArrays : true
+                },
             },{
                 $lookup : {
                     from : "categories",
@@ -36,8 +39,17 @@ const blogResolver = {
                     foreignField : "_id",
                     as : "category",
                 }
-            }
+            },
+            {
+                $lookup : {
+                    from : "comments",
+                    localField : "comments",
+                    foreignField : "_id",
+                    as : "comments",
+                }
+            },
         ])
+        return result
     },
 }
 

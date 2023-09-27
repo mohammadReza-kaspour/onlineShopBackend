@@ -1,11 +1,11 @@
 const { GraphQLString } = require("graphql");
-const { checkExistModel } = require("../utils/comments.graphql.utils");
+const { createCommentHandler } = require("../utils/comments.graphql.utils");
 const { blogModel } = require("../../models/blogs.model");
-const { checkAccessTokenToLogginGraphql } = require("../middlewares/public.graphql.middleware");
 const { publicResponseType } = require("../typeDefs/public.graphql.type");
-const { createError, badFieldsOrBadValuesFilter } = require("../../utils/functions.utils");
 const {StatusCodes} = require("http-status-codes");
-const { default: mongoose } = require("mongoose");
+const { checkAccessTokenToLogginGraphql } = require("../middlewares/public.graphql.middleware");
+const { productModel } = require("../../models/products.model");
+const { courseModel } = require("../../models/courses.model");
 
 const createCommentForBlogResolver = {
     type : publicResponseType,
@@ -16,20 +16,48 @@ const createCommentForBlogResolver = {
     },
     resolve : async (_ , args , context) => {
         const {comment , blogID , parent} = args;
-
         const user = await checkAccessTokenToLogginGraphql(context.req,context.res);
-        await checkExistModel(blogModel,blogID);
+        await createCommentHandler(blogModel , comment , blogID , parent , user);
 
-        const commentObject = badFieldsOrBadValuesFilter({
-            user : user._id,
-            comment : comment,
-            parent : mongoose.isValidObjectId(parent) ? new mongoose.Types.ObjectId(parent) : undefined,
-        } , ["user","comment","parent"]);
-        const result = await blogModel.updateOne(
-            {_id : blogID},
-            {$push : {comments : commentObject}}
-        );
-        if(result.modifiedCount <= 0) throw createError(400 , "کامنت افزوده نشد");
+        return {
+            statusCode : StatusCodes.CREATED,
+            success : true,
+            message : "کامنت با موفقیت افزوده شد و پس از تایید در سایت منتشر می شود",
+        }
+        
+    }
+}
+const createCommentForProductResolver = {
+    type : publicResponseType,
+    args : {
+        comment : {type : GraphQLString},
+        productID : {type : GraphQLString},
+        parent : {type : GraphQLString},
+    },
+    resolve : async (_ , args , context) => {
+        const {comment , productID , parent} = args;
+        const user = await checkAccessTokenToLogginGraphql(context.req , context.res);
+        await createCommentHandler(productModel , comment , productID , parent , user);
+
+        return {
+            statusCode : StatusCodes.CREATED,
+            success : true,
+            message : "کامنت با موفقیت افزوده شد و پس از تایید در سایت منتشر می شود",
+        }
+        
+    }
+}
+const createCommentForCourseResolver = {
+    type : publicResponseType,
+    args : {
+        comment : {type : GraphQLString},
+        courseID : {type : GraphQLString},
+        parent : {type : GraphQLString},
+    },
+    resolve : async (_ , args , context) => {
+        const {comment , courseID , parent} = args;
+        const user = await checkAccessTokenToLogginGraphql(context.req,context.res);
+        await createCommentHandler(courseModel , comment , courseID , parent , user);
 
         return {
             statusCode : StatusCodes.CREATED,
@@ -42,4 +70,6 @@ const createCommentForBlogResolver = {
 
 module.exports = {
     createCommentForBlogResolver,
+    createCommentForProductResolver,
+    createCommentForCourseResolver,
 }

@@ -51,6 +51,13 @@ const courseResolver = {
                     foreignField : "_id",
                     as : "category"
                 }
+            },{
+                $lookup : {
+                    from : "comments",
+                    localField : "comments",
+                    foreignField : "_id",
+                    as : "comments",
+                }
             },
         ])
     }

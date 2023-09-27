@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean } = require("graphql");
 
-const publicAuthorType = new GraphQLObjectType({
-    name : "publicAuthorType",
+const publicUserType = new GraphQLObjectType({
+    name : "publicUserType",
     fields : {
         _id : {type : GraphQLString},
         firstName : {type : GraphQLString},
@@ -37,14 +37,6 @@ const publicFeatureType = new GraphQLObjectType({
         madeIn : {type : GraphQLString}, 
     }
 })
-const publicSupplierType = new GraphQLObjectType({
-    name : "publicSupplierType",
-    fields : {
-        _id : {type : GraphQLString},
-        firstName : {type : GraphQLString},
-        lastName : {type : GraphQLString},
-    }
-})
 const publicEpisodeType = new GraphQLObjectType({
     name : "publicEpisodeType",
     fields : {
@@ -71,6 +63,7 @@ const publicCommentType = new GraphQLObjectType({
         _id : {type : GraphQLString},
         user : {type : GraphQLString},
         comment : {type : GraphQLString},
+        show : {type : GraphQLBoolean},
     }
 })
 const publicResponseType = new GraphQLObjectType({
@@ -84,10 +77,10 @@ const publicResponseType = new GraphQLObjectType({
 
 
 module.exports = {
-    publicAuthorType,
+    publicUserType,
     publicCategoryType,
     publicFeatureType,
-    publicSupplierType,
+    publicUserType,
     publicCategoryChildrenType,
     publicChapterType,
     publicCommentType,

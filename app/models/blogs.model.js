@@ -1,5 +1,4 @@
 const { Schema, Types, model } = require("mongoose");
-const { commentSchema } = require("./publicSchema.model");
 const { BASE_URL, PORT } = require("../utils/constants.utils");
 
 const blogSchema = new Schema({
@@ -9,10 +8,10 @@ const blogSchema = new Schema({
     image : {type : String , required : true},
     tags : {type : [String] , default : []},
     category : {type : [Types.ObjectId] , required : true , default : []},
-    comments : {type : [commentSchema] , default : []},
+    comments : {type : [Types.ObjectId] , default : []},
     likes : {type : [Types.ObjectId] , default : []},
     dislikes : {type : [Types.ObjectId] , default : []},
-    bookmarks : {type : [Types.ObjectId] , default : []},
+    bookmarks : {type : [Types.ObjectId] , default : []}, 
 },{
     timestamps : true,
     versionKey : false,

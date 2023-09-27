@@ -27,7 +27,7 @@ const courseSchema = new Schema({
     images : {type : [String] , default : []},
     tags : {type : [String] , default : []}, 
     category : {type : [Types.ObjectId] , default : []},
-    comments : {type : [commentSchema] , default : []},
+    comments : {type : [Types.ObjectId] , default : []},
     likes : {type : [Types.ObjectId] , default : []},
     dislikes : {type : [Types.ObjectId] , default : []},
     bookmarks : {type : [Types.ObjectId] , default : []},

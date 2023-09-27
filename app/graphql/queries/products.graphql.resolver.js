@@ -36,7 +36,14 @@ const productResolver = {
                 }
             },{
                 $unwind : "$supplier",
-            }
+            },{
+                $lookup : {
+                    from : "comments",
+                    localField : "comments",
+                    foreignField : "_id",
+                    as : "comments",
+                }
+            },
         ]);
     }
 }
