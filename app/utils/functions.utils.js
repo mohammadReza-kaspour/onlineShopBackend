@@ -1,3 +1,5 @@
+const { default: mongoose } = require("mongoose");
+
 const randomNumberGenerator = (length = 5) => {
     const {max , min} = {max:10 , min:0};
     let finalString = "";
@@ -24,6 +26,7 @@ const badFieldsOrBadValuesFilter = (data , acceptedFilds = []) => {
             data[key] = value.trim();
             value = value.trim();
         }
+        if(mongoose.isValidObjectId(value)) return;
         if(!validFilds.includes(key)) delete data[key];
         if(badValues.includes(value)) delete data[key];
         if(Array.isArray(data[key])){

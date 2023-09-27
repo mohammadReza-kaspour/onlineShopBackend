@@ -1,3 +1,7 @@
+const { userModel } = require("../../models/users.model");
+const { createError } = require("../../utils/functions.utils");
+const { verifyAccessToken } = require("../../utils/token.utils");
+
 const checkAccessTokenToLogginGraphql = async (req , res , next) => {
     try {
         const authField = req?.headers?.authorization;
@@ -7,7 +11,7 @@ const checkAccessTokenToLogginGraphql = async (req , res , next) => {
         const [bearer , token] = authField?.split(" ");
         if(!token || bearer.toLowerCase() !== "bearer") throw createError(401 , "لطفا وارد حساب کاربری خود شوید");
         const verifyResult = verifyAccessToken(token);
-        if(!verifyResult) throw createError(401 , "لطفا مجدد وارد حساب کاربری خود شوید");
+        if(!verifyResult) throw createError(401 , "لطفا مجدد وارد حساب کاربری خود شوید"); 
 
         const {mobile} = verifyResult || {};
         const user = await userModel.findOne({mobile});

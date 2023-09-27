@@ -1,10 +1,12 @@
 const { Schema, Types } = require("mongoose");
 
 const commentSchema = new Schema({
-    user : {type : Types.ObjectId , ref : "users" , required : "true"},
+    user : {type : Types.ObjectId , required : "true"},
     comment : {type : String , default : ""},
-    createdAt : {type : Date , dafault : Date.now()},
-    parent : {type : Types.ObjectId},
+    show : {type : Boolean , default : false},
+    parent : {type : Types.ObjectId , default : undefined},
+},{
+    timestamps : true,
 })
 
 module.exports = {

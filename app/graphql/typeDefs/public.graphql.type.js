@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString, GraphQLList } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean } = require("graphql");
 
 const publicAuthorType = new GraphQLObjectType({
     name : "publicAuthorType",
@@ -65,6 +65,22 @@ const publicChapterType = new GraphQLObjectType({
         episodes : {type : new GraphQLList(publicEpisodeType)},
     }
 })
+const publicCommentType = new GraphQLObjectType({
+    name : "publicCommentType",
+    fields : {
+        _id : {type : GraphQLString},
+        user : {type : GraphQLString},
+        comment : {type : GraphQLString},
+    }
+})
+const publicResponseType = new GraphQLObjectType({
+    name : "publicResponseType",
+    fields : {
+        statusCode : {type : GraphQLInt},
+        success : {type : GraphQLBoolean},
+        message : {type : GraphQLString},
+    }
+})
 
 
 module.exports = {
@@ -73,5 +89,7 @@ module.exports = {
     publicFeatureType,
     publicSupplierType,
     publicCategoryChildrenType,
-    publicChapterType
+    publicChapterType,
+    publicCommentType,
+    publicResponseType
 }
