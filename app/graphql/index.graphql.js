@@ -5,6 +5,8 @@ const { categoryResolver } = require("./queries/categories.graphql.resolver");
 const { courseResolver } = require("./queries/courses.graphql.resolver");
 const { createCommentForBlogResolver, createCommentForProductResolver, createCommentForCourseResolver } = require("./mutations/comments.graphql.resolver");
 const { likesOrDislikesForBlogResolver, likesOrDislikesForProductResolver, likesOrDislikesForCourseResolver } = require("./mutations/likesOrDislikes.graphql.resolver");
+const { bookmarkForBlogResolver, bookmarkForProductResolver, bookmarkForCourseResolver } = require("./mutations/bookmarks.graphql.resolver");
+const { userWishListResolver } = require("./queries/userWishlist.graphql.resolver");
 
 const rootQuery = new GraphQLObjectType({
     name : "rootQuery",
@@ -13,6 +15,7 @@ const rootQuery = new GraphQLObjectType({
         products : productResolver,
         categories : categoryResolver,
         courses : courseResolver,
+        wishList : userWishListResolver,
     }
 })
 
@@ -26,6 +29,10 @@ const rootMutation = new GraphQLObjectType({
         likeOrDislikeForBlog : likesOrDislikesForBlogResolver,
         likeOrDislikeForProduct : likesOrDislikesForProductResolver,
         likeOrDislikeForCourse : likesOrDislikesForCourseResolver,
+
+        bookmarkForBlog : bookmarkForBlogResolver,
+        bookmarkForProduct : bookmarkForProductResolver,
+        bookmarkForCourse : bookmarkForCourseResolver,
     }
 })
 
