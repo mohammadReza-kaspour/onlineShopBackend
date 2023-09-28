@@ -1,0 +1,8 @@
+mutation{
+  bookmarkForBlog(
+    blogID:"65037e7579657978b628157c"){
+    
+    statusCode
+    message
+  }
+}

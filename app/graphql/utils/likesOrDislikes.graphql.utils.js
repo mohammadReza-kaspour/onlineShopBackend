@@ -1,8 +1,16 @@
 const { StatusCodes } = require("http-status-codes");
 const { createError } = require("../../utils/functions.utils");
-
+const { default: mongoose } = require("mongoose");
+const checkExistModel = async (model , id) => {
+    if(!mongoose.isValidObjectId(id)) throw createError(400 , "شناسه وارد شده صحیح نمیباشد");
+    const result = await model.findOne({_id:id});
+    if(!result) throw createError(400 , "موردی در دیتابیس یافت نشد");
+    return result;
+}
 const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) => {
     let report = createError(StatusCodes.OK , "OK");
+
+    await checkExistModel(targetModel,targetID);
     const fetchedFromModel = await targetModel.findOne({_id : targetID});
 
     const liked = fetchedFromModel.likes.find(item => item.toString() === user._id.toString()) ? true : false;
@@ -17,7 +25,7 @@ const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) 
                 {$push : {likes : user._id}}
             );
             if(result.modifiedCount <= 0) report = createError(StatusCodes.BAD_REQUEST , "لایک انجام نشد");
-            report = createError(StatusCodes.OK , "لایک انجام شد");
+            else report = createError(StatusCodes.OK , "لایک انجام شد");
 
         }else if(disliked){
 
@@ -31,7 +39,7 @@ const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) 
                 {$push : {likes : user._id}}
             );
             if(resultStep2.modifiedCount <= 0) report = createError(StatusCodes.BAD_REQUEST , "لایک انجام نشد");
-            report = createError(StatusCodes.OK , "لایک انجام شد");
+            else report = createError(StatusCodes.OK , "لایک انجام شد");
 
         }else if(liked) {
             const result = await targetModel.updateOne(
@@ -39,7 +47,7 @@ const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) 
                 {$pull : {likes : user._id}}
             );
             if(result.modifiedCount <= 0) report = createError(StatusCodes.BAD_REQUEST , "لایک برداشته نشد");
-            report = createError(StatusCodes.OK , "لایک برداشته شد");
+            else report = createError(StatusCodes.OK , "لایک برداشته شد");
         }
 
     }else{
@@ -50,7 +58,7 @@ const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) 
                 {$push : {dislikes : user._id}}
             );
             if(result.modifiedCount <= 0) report = createError(StatusCodes.BAD_REQUEST , "دیس لایک انجام نشد");
-            report = createError(StatusCodes.OK , "دیس لایک انجام شد");
+            else report = createError(StatusCodes.OK , "دیس لایک انجام شد");
 
         }else if(liked){
 
@@ -64,7 +72,7 @@ const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) 
                 {$push : {dislikes : user._id}}
             );
             if(resultStep2.modifiedCount <= 0) report = createError(StatusCodes.BAD_REQUEST , "دیس لایک انجام نشد");
-            report = createError(StatusCodes.OK , "دیس لایک انجام شد");
+            else report = createError(StatusCodes.OK , "دیس لایک انجام شد");
             
         }else if(disliked) {
             const result = await targetModel.updateOne(
@@ -72,7 +80,7 @@ const likeOrDislikeHandler = async (targetModel , targetID , wantToLike , user) 
                 {$pull : {dislikes : user._id}}
             );
             if(result.modifiedCount <= 0) report = createError(StatusCodes.BAD_REQUEST , "دیس لایک برداشته نشد");
-            report = createError(StatusCodes.OK , "دیس لایک برداشته شد");
+            else report = createError(StatusCodes.OK , "دیس لایک برداشته شد");
         }
     }
 

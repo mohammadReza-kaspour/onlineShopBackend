@@ -1,0 +1,19 @@
+mutation{
+  removeFromBasket(
+    productOrCourse : "course"
+    targetID:"65037e7579657978b628157c"){
+    
+    statusCode
+    message
+  }
+}
+
+mutation{
+  addToBasket(
+    productOrCourse : "course"
+    targetID:"65037e7579657978b628157c"){
+    
+    statusCode
+    message
+  }
+}
