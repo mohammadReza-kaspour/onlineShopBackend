@@ -25,9 +25,13 @@ const addToBasketHandler = async (targetModel , targetID , user , type) => {
     const inBasket = await isInBasket(targetID , user , type);
     const searchTemp = type === "product" ? {"basket.products.productID" : targetID} : {"basket.courses.courseID" : targetID};
     const incTemp = type === "product" ? {"basket.products.$.count" : 1} : {"basket.courses.$.count" : 1};
-    const addTemp = type === "product" ? {"basket.products" : {productID:targetID,count:1}}:
-                                         {"basket.courses" : {courseID:targetID,count:1}};
+    const addTemp = type === "product" ?{"basket.products" : {productID:targetID,count:1}}:
+                                        {"basket.courses" : {courseID:targetID,count:1}};
     if(inBasket && type === "course") return report = createError(StatusCodes.BAD_REQUEST , "این دوره قبلا اضافه شده است");
+    if(type === "course"){
+        const boughtCourse = await userModel.findOne({_id:user._id , courses : targetID});
+        if(boughtCourse) return report = createError(StatusCodes.BAD_REQUEST , "این دوره قبلا خریداری شده است");
+    }
     if(inBasket){
         const result = await userModel.updateOne(
             {

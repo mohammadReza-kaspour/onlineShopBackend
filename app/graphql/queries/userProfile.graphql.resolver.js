@@ -92,6 +92,36 @@ const userBasketResolver = {
                 }
             },
             {
+                $addFields : {
+                    "payDetail" : {
+                        $function : {
+                            lang : "js",
+                            args : ["$productDetail" , "$courseDetail" , "$basket.products"],
+                            body : function(productDetail , courseDetail , products){
+                                const productAmount = productDetail.reduce((total , item) => {
+                                    return total + item.finalPrice
+                                },0);
+                                const courseAmount = courseDetail.reduce((total , item) => {
+                                    return total + item.finalPrice
+                                },0);
+
+                                const courseIDS = courseDetail.map(item => item._id.toString());
+                                const productIDS = productDetail.map(item => item._id.toString());
+
+                                return {
+                                    productAmount,
+                                    courseAmount,
+                                    paymentAmount : productAmount + courseAmount,
+                                    productIDS,
+                                    courseIDS,
+
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
                 $project : {basket : 0}
             }
         ])
