@@ -40,6 +40,8 @@
 /**
  * @swagger
  *  tags:
+ *      -   name: Api-Payment
+ *          description : Api-Payment routes
  *      -   name: Admin-Panel
  *          description : admin panel routes
  *      -   name: Admin-RBAC

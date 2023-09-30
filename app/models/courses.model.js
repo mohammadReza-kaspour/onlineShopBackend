@@ -33,6 +33,7 @@ const courseSchema = new Schema({
     bookmarks : {type : [Types.ObjectId] , default : []},
     price : {type : Number , default : 0},
     discount : {type : Number , default : 0},
+    count : {type : Number , default : 0},
     status : {type : String , default: "notstarted"},//notstarted , finished , ongoing
     type : {type : String , required : true , default: "free"}, //free-cash-vip
     supplier : {type : Types.ObjectId , required : true},

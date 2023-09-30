@@ -29,6 +29,7 @@ const userSchema = new Schema({
     birthday : {type : String},
     role : {type : String , default : "USER"},
     courses : {type : [Types.ObjectId] , default : []},
+    products : {type : [Types.ObjectId] , default : []},
     basket : {type : basketSchema},
 },{
     timestamps : true,

@@ -9,17 +9,17 @@ const { bookmarkForBlogResolver, bookmarkForProductResolver, bookmarkForCourseRe
 const { userWishListResolver, userBasketResolver } = require("./queries/userProfile.graphql.resolver");
 const { AddToBasketResolver, removeFromBasketResolver } = require("./mutations/basket.graphql.resolver");
 
-const rootQuery = new GraphQLObjectType({
-    name : "rootQuery",
-    fields : {
-        blogs : blogResolver,
-        products : productResolver,
-        categories : categoryResolver,
-        courses : courseResolver,
-        wishList : userWishListResolver,
-        userBasket : userBasketResolver,
-    }
-})
+    const rootQuery = new GraphQLObjectType({
+        name : "rootQuery",
+        fields : {
+            blogs : blogResolver,
+            products : productResolver,
+            categories : categoryResolver,
+            courses : courseResolver,
+            wishList : userWishListResolver,
+            userBasket : userBasketResolver,
+        }
+    })
 
 const rootMutation = new GraphQLObjectType({
     name : "rootMutation",

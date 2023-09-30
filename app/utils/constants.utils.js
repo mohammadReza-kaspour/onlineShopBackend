@@ -34,6 +34,8 @@ module.exports = {
 
     MY_LONGTERM_TOKEN : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTExOTQ2MTU2OCIsImlhdCI6MTY5NDQ2NDE3MSwiZXhwIjoxNzI2MDIxNzcxfQ.-E1L2O1E5P8G6Lt_aI7lDxYO8peAJOrYAWy13heK8A4",
 
-    
+    PAYMENT_CONSTANTS : {
+        merchant_id : "e991b525-0a24-44e5-9f7b-a71b004bbac7",
+    }
     
 }
