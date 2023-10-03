@@ -5,13 +5,15 @@ const { adminAllRoutes } = require("./admin/index.router.admin");
 const { apiAllRoutes } = require("./api/index.router.api");
 const { userAllRoutes } = require("./user/index.router.user");
 const { graphQLConfig } = require("../graphql/graphql.config");
+const { supportAllRoutes } = require("./support/index.router.support");
 
 const router = require("express").Router();
 
 router.use("/" , apiAllRoutes);
 router.use("/user" , userAllRoutes);
 router.use("/admin" , checkAccessTokenToLoggin , adminAllRoutes);
-router.use("/graphql" , graphqlHTTP(graphQLConfig)); 
+router.use("/graphql" , graphqlHTTP(graphQLConfig));
+router.use("/support" , checkAccessTokenToLoggin , supportAllRoutes)
 
 module.exports = {
     allRoutes : router,

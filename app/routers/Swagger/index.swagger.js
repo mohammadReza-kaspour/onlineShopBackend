@@ -40,6 +40,8 @@
 /**
  * @swagger
  *  tags:
+ *      -   name: SupportChat-Routes
+ *          description : SupportChat-Routes
  *      -   name: Api-Payment
  *          description : Api-Payment routes
  *      -   name: Admin-Panel

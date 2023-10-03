@@ -88,7 +88,6 @@ class Application {
 
         process.on("SIGINT" , async() => {
             await mongoose.connection.close();
-            console.log("ok");
             process.exit(0);
         })
     }
